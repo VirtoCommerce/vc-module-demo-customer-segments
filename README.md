@@ -1,2 +1,2 @@
 # vc-module-demo-customer-segments
-Add customer segments functionality to VirtoCommerce platform
+This module adds the customer segments functionality to VirtoCommerce platform.
