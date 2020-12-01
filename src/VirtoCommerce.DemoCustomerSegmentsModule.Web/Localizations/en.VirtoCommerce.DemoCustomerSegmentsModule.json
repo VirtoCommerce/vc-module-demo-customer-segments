@@ -1,0 +1,28 @@
+{
+  "virtoCommerce.demoCustomerSegmentsModule": {
+    "blades": {
+      "hello-world": {
+        "title": "Hello world blade"
+      }
+    }
+  },
+  "permissions": {
+    "virtoCommerceDemoCustomerSegmentsModule:access": "Open VirtoCommerceDemoCustomerSegmentsModule menu",
+    "virtoCommerceDemoCustomerSegmentsModule:create": "Create VirtoCommerceDemoCustomerSegmentsModule related data",
+    "virtoCommerceDemoCustomerSegmentsModule:read": "View VirtoCommerceDemoCustomerSegmentsModule related data",
+    "virtoCommerceDemoCustomerSegmentsModule:update": "Update VirtoCommerceDemoCustomerSegmentsModule related data",
+    "virtoCommerceDemoCustomerSegmentsModule:delete": "Delete VirtoCommerceDemoCustomerSegmentsModule related data"
+  },
+  "settings": {
+    "VirtoCommerceDemoCustomerSegmentsModule": {
+      "VirtoCommerceDemoCustomerSegmentsModulePassword": {
+        "title": "VirtoCommerceDemoCustomerSegmentsModule Password",
+        "description": "VirtoCommerceDemoCustomerSegmentsModule Password setting"
+      },
+      "VirtoCommerceDemoCustomerSegmentsModuleEnabled": {
+        "title": "VirtoCommerceDemoCustomerSegmentsModule Enabled",
+        "description": "VirtoCommerceDemoCustomerSegmentsModule Enabled setting"
+      }
+    }
+  }
+}
