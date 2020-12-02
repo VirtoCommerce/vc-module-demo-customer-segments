@@ -104,14 +104,6 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web.Controllers.Api
             var result = await _customerSegmentSearchService.SearchCustomerSegmentsAsync(criteria);
 
             return Ok(result);
-        }
-
-        private static void ValidateParameters(DemoCustomerSegmentConditionEvaluationRequest conditionRequest)
-        {
-            if (conditionRequest == null)
-            {
-                throw new ArgumentNullException(nameof(conditionRequest));
-            }
-        }
+        }        
     }
 }
