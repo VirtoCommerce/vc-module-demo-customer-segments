@@ -2,11 +2,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using VirtoCommerce.DemoSolutionFeaturesModule.Data.Models;
+using VirtoCommerce.DemoCustomerSegmentsModule.Data.Models;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Data.Infrastructure;
 
-namespace VirtoCommerce.DemoSolutionFeaturesModule.Data.Repositories
+namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Repositories
 {
     public class DemoCustomerSegmentRepository: DbContextRepositoryBase<DemoCustomerSegmentDbContext>, IDemoCustomerSegmentRepository
     {

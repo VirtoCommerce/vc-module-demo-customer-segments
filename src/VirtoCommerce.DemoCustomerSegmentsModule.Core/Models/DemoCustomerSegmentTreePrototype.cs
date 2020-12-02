@@ -1,6 +1,6 @@
 using VirtoCommerce.CoreModule.Core.Conditions;
 
-namespace VirtoCommerce.DemoSolutionFeaturesModule.Core.Models
+namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Models
 {
     public class DemoCustomerSegmentTreePrototype: ConditionTree
     {

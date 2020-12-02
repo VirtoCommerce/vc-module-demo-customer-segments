@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Primitives;
-using VirtoCommerce.DemoSolutionFeaturesModule.Core.Models;
+using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
 using VirtoCommerce.Platform.Core.Caching;
 
-namespace VirtoCommerce.DemoSolutionFeaturesModule.Data.Caching
+namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Caching
 {
     public class DemoCustomerSegmentCacheRegion : CancellableCacheRegion<DemoCustomerSegmentCacheRegion>
     {

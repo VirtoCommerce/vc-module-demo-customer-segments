@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
-using VirtoCommerce.DemoSolutionFeaturesModule.Core.Events;
-using VirtoCommerce.DemoSolutionFeaturesModule.Core.Models;
-using VirtoCommerce.DemoSolutionFeaturesModule.Core.Services;
-using VirtoCommerce.DemoSolutionFeaturesModule.Data.Caching;
-using VirtoCommerce.DemoSolutionFeaturesModule.Data.Models;
-using VirtoCommerce.DemoSolutionFeaturesModule.Data.Repositories;
+using VirtoCommerce.DemoCustomerSegmentsModule.Core.Events;
+using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
+using VirtoCommerce.DemoCustomerSegmentsModule.Core.Services;
+using VirtoCommerce.DemoCustomerSegmentsModule.Data.Caching;
+using VirtoCommerce.DemoCustomerSegmentsModule.Data.Models;
+using VirtoCommerce.DemoCustomerSegmentsModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.Caching;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Events;
 using VirtoCommerce.Platform.Data.Infrastructure;
 
-namespace VirtoCommerce.DemoSolutionFeaturesModule.Data.Services.CustomerSegment
+namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Services
 {
     public class DemoCustomerSegmentService: IDemoCustomerSegmentService
     {

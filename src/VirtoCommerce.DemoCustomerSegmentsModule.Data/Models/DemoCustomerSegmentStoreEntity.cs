@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.Platform.Core.Common;
 
-namespace VirtoCommerce.DemoSolutionFeaturesModule.Data.Models
+namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Models
 {
     public class DemoCustomerSegmentStoreEntity: Entity
     {

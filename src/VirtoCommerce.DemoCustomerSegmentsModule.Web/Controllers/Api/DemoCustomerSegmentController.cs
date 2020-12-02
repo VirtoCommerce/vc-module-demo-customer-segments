@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using VirtoCommerce.DemoSolutionFeaturesModule.Core;
-using VirtoCommerce.DemoSolutionFeaturesModule.Core.Models;
-using VirtoCommerce.DemoSolutionFeaturesModule.Core.Models.Search;
-using VirtoCommerce.DemoSolutionFeaturesModule.Core.Services;
+using VirtoCommerce.DemoCustomerSegmentsModule.Core;
+using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
+using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models.Search;
+using VirtoCommerce.DemoCustomerSegmentsModule.Core.Services;
 using VirtoCommerce.Platform.Core.Common;
 
-namespace VirtoCommerce.DemoSolutionFeaturesModule.Web.Controllers.Api
+namespace VirtoCommerce.DemoCustomerSegmentsModule.Web.Controllers.Api
 {
     [Route("/api/demo/customersegments")]
     public class DemoCustomerSegmentController: Controller

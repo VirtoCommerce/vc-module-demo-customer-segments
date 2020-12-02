@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Newtonsoft.Json;
 using VirtoCommerce.CoreModule.Core.Conditions;
-using VirtoCommerce.DemoSolutionFeaturesModule.Core.Models;
+using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
 using VirtoCommerce.Platform.Core.Common;
 
-namespace VirtoCommerce.DemoSolutionFeaturesModule.Data.Models
+namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Models
 {
     public class DemoCustomerSegmentEntity: AuditableEntity
     {

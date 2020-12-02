@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace VirtoCommerce.DemoSolutionFeaturesModule.Data.Repositories
+namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Repositories
 {
     public class DesignTimeCustomerSegmentDbContextFactory: IDesignTimeDbContextFactory<DemoCustomerSegmentDbContext>
     {

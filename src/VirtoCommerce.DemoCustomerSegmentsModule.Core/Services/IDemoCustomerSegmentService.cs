@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using VirtoCommerce.DemoSolutionFeaturesModule.Core.Models;
+using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
 
-namespace VirtoCommerce.DemoSolutionFeaturesModule.Core.Services
+namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Services
 {
     public interface IDemoCustomerSegmentService
     {

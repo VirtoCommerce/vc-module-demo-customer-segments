@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using VirtoCommerce.DemoSolutionFeaturesModule.Core.Models.Search;
+using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models.Search;
 
-namespace VirtoCommerce.DemoSolutionFeaturesModule.Core.Services
+namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Services
 {
     public interface IDemoCustomerSegmentSearchService
     {

@@ -1,9 +1,9 @@
 using System.Linq;
 using System.Threading.Tasks;
-using VirtoCommerce.DemoSolutionFeaturesModule.Data.Models;
+using VirtoCommerce.DemoCustomerSegmentsModule.Data.Models;
 using VirtoCommerce.Platform.Core.Common;
 
-namespace VirtoCommerce.DemoSolutionFeaturesModule.Data.Repositories
+namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Repositories
 {
     public interface IDemoCustomerSegmentRepository: IRepository
     {

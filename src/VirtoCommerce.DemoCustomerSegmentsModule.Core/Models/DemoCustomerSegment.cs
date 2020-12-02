@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using VirtoCommerce.Platform.Core.Common;
 
-namespace VirtoCommerce.DemoSolutionFeaturesModule.Core.Models
+namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Models
 {
     public class DemoCustomerSegment: AuditableEntity
     {

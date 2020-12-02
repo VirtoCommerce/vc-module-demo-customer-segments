@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using VirtoCommerce.DemoSolutionFeaturesModule.Core.Models;
+using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
 using VirtoCommerce.Platform.Core.Events;
 
-namespace VirtoCommerce.DemoSolutionFeaturesModule.Core.Events
+namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Events
 {
     public class DemoCustomerSegmentChangedEvent : GenericChangedEntryEvent<DemoCustomerSegment>
     {

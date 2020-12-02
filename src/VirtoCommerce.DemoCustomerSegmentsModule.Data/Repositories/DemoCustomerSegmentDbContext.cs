@@ -1,8 +1,8 @@
 using EntityFrameworkCore.Triggers;
 using Microsoft.EntityFrameworkCore;
-using VirtoCommerce.DemoSolutionFeaturesModule.Data.Models;
+using VirtoCommerce.DemoCustomerSegmentsModule.Data.Models;
 
-namespace VirtoCommerce.DemoSolutionFeaturesModule.Data.Repositories
+namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Repositories
 {
     public class DemoCustomerSegmentDbContext: DbContextWithTriggers
     {
