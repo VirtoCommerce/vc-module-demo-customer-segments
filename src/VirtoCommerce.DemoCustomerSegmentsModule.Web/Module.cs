@@ -45,10 +45,6 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
             AbstractTypeFactory<IConditionTree>.RegisterType<DemoBlockCustomerSegmentRule>();
             AbstractTypeFactory<IConditionTree>.RegisterType<DemoConditionPropertyValues>();
 
-            // register settings
-            //var settingsRegistrar = appBuilder.ApplicationServices.GetRequiredService<ISettingsRegistrar>();
-            //settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
-
             // register permissions
             var permissionsProvider = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
             permissionsProvider.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x =>
