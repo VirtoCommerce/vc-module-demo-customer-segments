@@ -4,7 +4,7 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Models
 {
-    public class DemoCustomerSegment: AuditableEntity
+    public class DemoCustomerSegment : AuditableEntity
     {
         public DemoCustomerSegment()
         {

@@ -13,7 +13,7 @@ using VirtoCommerce.Platform.Core.Common;
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Web.Controllers.Api
 {
     [Route("/api/demo/customersegments")]
-    public class DemoCustomerSegmentController: Controller
+    public class DemoCustomerSegmentController : Controller
     {
         private readonly IDemoCustomerSegmentService _customerSegmentService;
         private readonly IDemoCustomerSegmentSearchService _customerSegmentSearchService;
@@ -26,7 +26,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web.Controllers.Api
         }
 
         /// <summary>
-        /// Get new customer segment object 
+        /// Get new customer segment object
         /// </summary>
         /// <remarks>Return a new customer segment object with populated dynamic expression tree</remarks>
         [HttpGet]

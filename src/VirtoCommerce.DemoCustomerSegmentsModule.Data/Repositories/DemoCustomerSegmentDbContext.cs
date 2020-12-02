@@ -4,13 +4,13 @@ using VirtoCommerce.DemoCustomerSegmentsModule.Data.Models;
 
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Repositories
 {
-    public class DemoCustomerSegmentDbContext: DbContextWithTriggers
+    public class DemoCustomerSegmentDbContext : DbContextWithTriggers
     {
-        public DemoCustomerSegmentDbContext(DbContextOptions<DemoCustomerSegmentDbContext> options): base(options)
+        public DemoCustomerSegmentDbContext(DbContextOptions<DemoCustomerSegmentDbContext> options) : base(options)
         {
         }
 
-        protected DemoCustomerSegmentDbContext(DbContextOptions options): base(options)
+        protected DemoCustomerSegmentDbContext(DbContextOptions options) : base(options)
         {
         }
 

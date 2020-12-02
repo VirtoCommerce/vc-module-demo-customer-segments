@@ -3,7 +3,7 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Models.Search
 {
-    public class DemoCustomerSegmentSearchCriteria: SearchCriteriaBase
+    public class DemoCustomerSegmentSearchCriteria : SearchCriteriaBase
     {
         public DemoCustomerSegmentSearchCriteria()
         {

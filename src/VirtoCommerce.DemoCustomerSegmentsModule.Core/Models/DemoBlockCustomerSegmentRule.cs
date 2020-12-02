@@ -3,7 +3,7 @@ using VirtoCommerce.CoreModule.Core.Conditions;
 
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Models
 {
-    public class DemoBlockCustomerSegmentRule: BlockConditionAndOr
+    public class DemoBlockCustomerSegmentRule : BlockConditionAndOr
     {
         public DemoBlockCustomerSegmentRule()
         {

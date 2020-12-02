@@ -2,8 +2,7 @@ using VirtoCommerce.CoreModule.Core.Conditions;
 
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Models
 {
-    public class DemoCustomerSegmentTree: ConditionTree
+    public class DemoCustomerSegmentTree : ConditionTree
     {
-        
     }
 }

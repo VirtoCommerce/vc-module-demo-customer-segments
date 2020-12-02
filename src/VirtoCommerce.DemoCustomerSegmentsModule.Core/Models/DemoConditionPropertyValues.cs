@@ -3,7 +3,7 @@ using VirtoCommerce.CoreModule.Core.Conditions;
 
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Models
 {
-    public class DemoConditionPropertyValues: ConditionTree
+    public class DemoConditionPropertyValues : ConditionTree
     {
         public IDictionary<string, string[]> Properties { get; set; }
 

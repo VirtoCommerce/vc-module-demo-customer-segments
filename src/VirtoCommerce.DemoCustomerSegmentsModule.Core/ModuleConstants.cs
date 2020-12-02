@@ -14,6 +14,6 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Core
 
                 public static string[] AllPermissions { get; } = { Read, Create, Access, Update, Delete };
             }
-        }       
+        }
     }
 }
