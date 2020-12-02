@@ -5,18 +5,21 @@
     <version-tag></version-tag>
     <platformVersion>3.0.0</platformVersion>
     <dependencies>
-<!--        <dependency id="VirtoCommerce.Core" version="3.0.0" /> -->
+        <dependency id="VirtoCommerce.Core" version="3.0.0" /> 
     </dependencies>
 
     <title>VirtoCommerce.DemoCustomerSegmentsModule</title>
-    <description>Enter your module description here.</description>
+    <description>This module adds the customer segments functionality to VirtoCommerce platform.</description>
     <authors>
-        <author>trueb</author>
+        <author>asvishnyakov</author>
+        <author>trueboroda</author>
     </authors>
     <owners>
-      <owner></owner>
+      <owner>Virto Commerce</owner>
     </owners>
 
+    <projectUrl>https://github.com/VirtoCommerce/vc-module-demo-customer-segments</projectUrl>
+    
     <releaseNotes>First version.</releaseNotes>
     <copyright>Copyright © 2020 . All rights reserved</copyright>
     <tags>extension module</tags>
