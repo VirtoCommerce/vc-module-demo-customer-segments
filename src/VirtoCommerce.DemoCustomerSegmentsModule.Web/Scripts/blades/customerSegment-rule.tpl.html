@@ -1,5 +1,5 @@
 <div class="blade-static __bottom">
-    <button class="btn" ng-click="saveRule()" ng-disabled="!canSave()">
+    <button class="btn" ng-click="saveChanges()" ng-disabled="!canSave()">
         <span>{{ 'demoCustomerSegmentsModule.blades.customer-segment-rule-creation.confirm' | translate }}</span>
     </button>
 </div>
@@ -12,9 +12,9 @@
                         <li class="list-item" ng-click="selectProperties()" ng-class="{'__selected': blade.activeBladeId === 'propertiesSelector', '__disabled': blade.categoryCount === 0 }">
                             <i class="list-ico fa fa-cogs" aria-hidden="true"></i>
                             <span class="list-t">{{ 'demoCustomerSegmentsModule.blades.customer-segment-rule-creation.select-properties' | translate }}</span>
-                            <span class="list-descr">{{ 'demoCustomerSegmentsModule.blades.customer-segment-rule-creation.select-properties-description' | translate: {count: blade.editedPropertiesCount, total: blade.propertiesCount} }}</span>
+                            <span class="list-descr">{{ 'demoCustomerSegmentsModule.blades.customer-segment-rule-creation.select-properties-description' | translate: {count: blade.selectedPropertiesCount, total: blade.propertiesCount} }}</span>
                         </li>
-                        <li class="list-item" ng-click="editProperties()" ng-class="{'__selected': blade.activeBladeId === 'propertiesEditor', '__disabled': blade.editedPropertiesCount === 0 }">
+                        <li class="list-item" ng-click="editProperties()" ng-class="{'__selected': blade.activeBladeId === 'propertiesEditor', '__disabled': blade.selectedPropertiesCount === 0 }">
                             <i class="list-ico fa fa-cogs" aria-hidden="true"></i>
                             <span class="list-t">{{ 'demoCustomerSegmentsModule.blades.customer-segment-rule-creation.set-value-to-properties' | translate }}</span>
                             <span class="list-descr">{{ 'demoCustomerSegmentsModule.blades.customer-segment-rule-creation.set-value-to-properties-description' | translate: {count: blade.customersCount} }}</span>

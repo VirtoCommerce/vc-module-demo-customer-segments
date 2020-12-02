@@ -1,7 +1,11 @@
 angular.module('virtoCommerce.DemoCustomerSegmentsModule')
-    .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentMainParametersController', ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.storeModule.stores', function ($scope, bladeNavigationService, storeService) {
+.controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentMainParametersController',
+    ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.storeModule.stores',
+    function ($scope, bladeNavigationService, storeService) {
         var blade = $scope.blade;
         blade.isLoading = true;
+        blade.currentEntity = {};
+
         var formScope;
         $scope.setForm = (form) => { formScope = form; };
 
@@ -9,14 +13,9 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             return formScope && formScope.$valid;
         };
 
-        blade.currentEntity = {};
-
-        blade.refresh = (parentRefresh) => {
+        blade.refresh = () => {
             storeService.query({}, response => {
                 $scope.stores = response;
-                if (parentRefresh) {
-                    blade.parentBlade.refresh();
-                }
                 blade.isLoading = false;
             });
 
@@ -36,23 +35,19 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
         };
 
         $scope.cancelChanges = function() {
-            blade.parentBlade.activeBladeId = null;
-            bladeNavigationService.closeBlade(blade);
+            $scope.bladeClose();
         };
 
         $scope.saveChanges = function() {
-            blade.parentBlade.activeBladeId = null;
-
             if (blade.currentEntity.isActive === undefined) {
                 blade.currentEntity.isActive = false;
             }
 
             if (blade.onSelected) {
                 blade.onSelected(blade.currentEntity);
-                bladeNavigationService.closeBlade(blade);
             }
 
-            bladeNavigationService.closeBlade(blade);
+            $scope.bladeClose();
         };
 
         $scope.bladeClose = function() {
@@ -60,5 +55,5 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             bladeNavigationService.closeBlade(blade);
         };
 
-        blade.refresh(false);
+        blade.refresh();
     }]);
