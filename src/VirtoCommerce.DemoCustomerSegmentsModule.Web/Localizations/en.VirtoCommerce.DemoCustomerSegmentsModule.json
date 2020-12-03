@@ -1,6 +1,13 @@
 {
   "demoCustomerSegmentsModule": {
     "blades": {
+      "customer-segment-list": {
+        "labels": {
+          "name": "Segment name",
+          "isActive": "Is active",
+          "last-modified": "Modified"
+        }
+      },
       "customer-segment-detail": {
         "segment-name": "Segment name",
         "segment-description": "Description",
@@ -10,6 +17,8 @@
         "segment-rule-description": "17 customers in the current filter",
         "user-group": "User group",
         "user-group-placeholder": "Select user group"
+        "title": "New segment",
+        "subtitle": "Customer rule based segment"
       },
       "customer-segment-parameters": {
         "title": "Main parameters",
@@ -54,6 +63,12 @@
           "type": "Type",
           "name": "Name"
         }
+      }
+    },
+    "dialogs": {
+      "customer-segment-delete": {
+        "title": "Delete confirmation",
+        "message": "Customer segments will be deleted and the customers of this segments will no longer be receiving the tagged promotions"
       }
     }
   },
