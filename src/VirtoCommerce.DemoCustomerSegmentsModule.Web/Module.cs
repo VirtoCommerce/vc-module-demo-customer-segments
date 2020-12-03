@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.CoreModule.Core.Conditions;
-using VirtoCommerce.DemoCustomerSegmentsModule.Core;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Services;
 using VirtoCommerce.DemoCustomerSegmentsModule.Data.Repositories;
@@ -15,7 +13,6 @@ using VirtoCommerce.DemoCustomerSegmentsModule.Data.Services;
 using VirtoCommerce.DemoCustomerSegmentsModule.Web.JsonConverters;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Modularity;
-using VirtoCommerce.Platform.Core.Security;
 
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
 {
@@ -45,25 +42,11 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
             AbstractTypeFactory<IConditionTree>.RegisterType<DemoBlockCustomerSegmentRule>();
             AbstractTypeFactory<IConditionTree>.RegisterType<DemoConditionPropertyValues>();
 
-            // register permissions
-            var permissionsProvider = appBuilder.ApplicationServices.GetRequiredService<IPermissionsRegistrar>();
-            permissionsProvider.RegisterPermissions(ModuleConstants.Security.Permissions.AllPermissions.Select(x =>
-                new Permission()
-                {
-                    GroupName = "VirtoCommerceDemoCustomerSegmentsModule",
-                    ModuleId = ModuleInfo.Id,
-                    Name = x
-                }).ToArray());
-
             // Ensure that any pending migrations are applied
-            using (var serviceScope = appBuilder.ApplicationServices.CreateScope())
-            {
-                using (var dbContext = serviceScope.ServiceProvider.GetRequiredService<DemoCustomerSegmentDbContext>())
-                {
-                    dbContext.Database.EnsureCreated();
-                    dbContext.Database.Migrate();
-                }
-            }
+            using var serviceScope = appBuilder.ApplicationServices.CreateScope();
+            using var dbContext = serviceScope.ServiceProvider.GetRequiredService<DemoCustomerSegmentDbContext>();
+            dbContext.Database.EnsureCreated();
+            dbContext.Database.Migrate();
         }
 
         public void Uninstall()

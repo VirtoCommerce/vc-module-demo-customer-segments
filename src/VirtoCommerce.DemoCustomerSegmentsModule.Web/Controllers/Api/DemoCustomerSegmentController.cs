@@ -1,10 +1,9 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using VirtoCommerce.DemoCustomerSegmentsModule.Core;
+using marketingCore = VirtoCommerce.MarketingModule.Core;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models.Search;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Services;
@@ -31,7 +30,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web.Controllers.Api
         /// <remarks>Return a new customer segment object with populated dynamic expression tree</remarks>
         [HttpGet]
         [Route("new")]
-        [Authorize(ModuleConstants.Security.Permissions.Create)]
+        [Authorize(marketingCore.ModuleConstants.Security.Permissions.Create)]
         public ActionResult<DemoCustomerSegment> GetNewCustomerSegment()
         {
             var result = AbstractTypeFactory<DemoCustomerSegment>.TryCreateInstance();
@@ -49,7 +48,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web.Controllers.Api
         /// <param name="id">Customer segment ID</param>
         [HttpGet]
         [Route("{id}")]
-        [Authorize(ModuleConstants.Security.Permissions.Read)]
+        [Authorize(marketingCore.ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<DemoCustomerSegment>> GetCustomerSegmentById([FromRoute] string id)
         {
             var result = (await _customerSegmentService.GetByIdsAsync(new[] { id })).FirstOrDefault();
@@ -65,7 +64,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web.Controllers.Api
         /// <param name="customerSegments">The customer segments.</param>
         [HttpPost]
         [Route("")]
-        [Authorize(ModuleConstants.Security.Permissions.Update)]
+        [Authorize(marketingCore.ModuleConstants.Security.Permissions.Update)]
         public async Task<ActionResult<DemoCustomerSegment[]>> SaveCustomerSegments([FromBody] DemoCustomerSegment[] customerSegments)
         {
             if (!customerSegments.IsNullOrEmpty())
@@ -82,7 +81,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web.Controllers.Api
         /// <param name="ids">Customer segment IDs.</param>
         [HttpDelete]
         [Route("")]
-        [Authorize(ModuleConstants.Security.Permissions.Delete)]
+        [Authorize(marketingCore.ModuleConstants.Security.Permissions.Delete)]
         [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
         public async Task<ActionResult> DeleteCustomerSegments([FromQuery] string[] ids)
         {
@@ -98,7 +97,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web.Controllers.Api
         /// <returns>Search result with total number of found customer segments and all found customer segments.</returns>
         [HttpPost]
         [Route("search")]
-        [Authorize(ModuleConstants.Security.Permissions.Read)]
+        [Authorize(marketingCore.ModuleConstants.Security.Permissions.Read)]
         public async Task<ActionResult<DemoCustomerSegmentSearchResult>> SearchCustomerSegments([FromBody] DemoCustomerSegmentSearchCriteria criteria)
         {
             var result = await _customerSegmentSearchService.SearchCustomerSegmentsAsync(criteria);
