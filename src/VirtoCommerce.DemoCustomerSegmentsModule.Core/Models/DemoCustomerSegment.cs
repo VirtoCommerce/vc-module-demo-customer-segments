@@ -15,6 +15,8 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Models
 
         public string Description { get; set; }
 
+        public string UserGroup { get; set; }
+
         public bool IsActive { get; set; }
 
         public DateTime? StartDate { get; set; }

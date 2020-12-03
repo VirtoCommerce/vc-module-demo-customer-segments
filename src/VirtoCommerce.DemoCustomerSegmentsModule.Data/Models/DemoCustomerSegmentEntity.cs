@@ -9,15 +9,17 @@ using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Models
 {
-    public class DemoCustomerSegmentEntity: AuditableEntity
+    public class DemoCustomerSegmentEntity : AuditableEntity
     {
         [Required]
         [StringLength(128)]
         public string Name { get; set; }
-        
+
         [Required]
         [StringLength(1024)]
         public string Description { get; set; }
+
+        public string UserGroup { get; set; }
 
         public bool IsActive { get; set; }
 
@@ -44,6 +46,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Models
 
             customerSegment.Name = Name;
             customerSegment.Description = Description;
+            customerSegment.UserGroup = UserGroup;
             customerSegment.IsActive = IsActive;
             customerSegment.StartDate = StartDate;
             customerSegment.EndDate = EndDate;
@@ -79,6 +82,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Models
 
             Name = customerSegment.Name;
             Description = customerSegment.Description;
+            UserGroup = customerSegment.UserGroup;
             IsActive = customerSegment.IsActive;
             StartDate = customerSegment.StartDate;
             EndDate = customerSegment.EndDate;
@@ -105,6 +109,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Models
 
             target.Name = Name;
             target.Description = Description;
+            target.UserGroup = UserGroup;
             target.IsActive = IsActive;
             target.StartDate = StartDate;
             target.EndDate = EndDate;
