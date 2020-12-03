@@ -1,0 +1,44 @@
+<div class="blade-static">
+    <div class="form-group">
+        <div class="form-input __search">
+            <input placeholder="{{'platform.placeholders.search-keyword' | translate}}" ng-model="filter.keyword" ng-keyup="$event.which === 13 && filter.criteriaChanged()" style="width: 80%" />
+            <button class="btn __other" style="position: relative;right: 45px;">
+                <i class="btn-ico fa fa-times" title="Clear" ng-click="filter.keyword=null;filter.criteriaChanged()" aria-hidden="true"></i>
+            </button>
+            <p class="form-count">{{'platform.list.count' | translate}}: <span class="count">{{pageSettings.totalItems}}</span></p>
+        </div>
+    </div>
+</div>
+<div class="blade-static __bottom" ng-if="pageSettings.itemsPerPageCount < pageSettings.totalItems" ng-include="'pagerTemplate.html'"></div>
+<div class="blade-content">
+    <div class="blade-inner">
+        <div class="inner-block" ng-init="setGridOptions('customer-segment-preview-grid', {
+                    useExternalSorting: true,
+                    data: 'customers',
+                    rowTemplate: 'customerSegment-preview.row.html',
+                    rowHeight: 61,
+                    columnDefs: [
+                                {
+                                  name: 'memberType', displayName: 'demoCustomerSegmentsModule.blades.customer-segment-preview.labels.type',
+                                  enableColumnResizing: false, width: 60, cellTemplate: 'customerSegment-preview-icon.cell.html', sort: { direction: uiGridConstants.DESC }
+                                },
+                                { name: 'name', displayName: 'demoCustomerSegmentsModule.blades.customer-segment-preview.labels.name', sort: { direction: uiGridConstants.ASC } }
+                        ]})">
+            <div class="note" ng-if="!customers.length">{{ 'platform.list.no-data' | translate }}</div>
+            <div class="table-wrapper" ng-if="customers.length">
+                <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-resize-columns ui-grid-move-columns ui-grid-pinning ui-grid-height></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="customerSegment-preview.row.html">
+    <div ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid" ui-grid-one-bind-id-grid="rowRenderIndex + '-' + col.uid + '-cell'" class="ui-grid-cell" ng-class="{'ui-grid-row-header-cell': col.isRowHeader, '__selected': row.entity.id===grid.appScope.selectedNodeId }" role="{{col.isRowHeader ? 'rowheader' : 'gridcell' }}" ui-grid-cell></div>
+</script>
+<script type="text/ng-template" id="customerSegment-preview-icon.cell.html">
+    <div class="ui-grid-cell-contents">
+        <div class="product-img" ng-attr-title="{{COL_FIELD}}">
+            <i class="table-ico fa" ng-class="row.entity._memberTypeIcon ? row.entity._memberTypeIcon : 'fa-user'"></i>
+        </div>
+    </div>
+</script>

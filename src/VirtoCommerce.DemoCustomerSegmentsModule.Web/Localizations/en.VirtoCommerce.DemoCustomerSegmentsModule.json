@@ -1,0 +1,77 @@
+{
+  "demoCustomerSegmentsModule": {
+    "blades": {
+      "customer-segment-detail": {
+        "segment-name": "Segment name",
+        "segment-description": "Description",
+        "main-parameters": "Main parameters",
+        "main-parameters-description": "{{count}} of {{total}} properties filled",
+        "segment-rule": "Segment rule",
+        "segment-rule-description": "17 customers in the current filter"
+      },
+      "customer-segment-parameters": {
+        "title": "Main parameters",
+        "subtitle": "Customer rule based segment",
+        "labels": {
+          "is-active": "Is Active",
+          "start-date": "Start date",
+          "expiration-date": "Expiration date",
+          "store": "Stores"
+        },
+        "descriptions": {
+          "is-active": "Flag controls Active/Inactive the rule",
+          "store": "Stores in which this segment will be active"
+        },
+        "placeholders": {
+          "start-date": "Please choose date...",
+          "expiration-date": "Please choose date...",
+          "store": "Please select store..."
+        }
+      },
+      "customer-segment-rule-creation": {
+        "title": "Segment rule",
+        "subtitle": "Build a filter for segment rule",
+        "select-properties": "Select properties",
+        "select-properties-description": "{{count}} of {{total}} selected",
+        "set-value-to-properties": "Set value to selected properties",
+        "set-value-to-properties-description": "{{count}} customers in the current filter",
+        "confirm": "Confirm"
+      },
+      "customer-segment-properties": {
+        "title": "Select properties for filtering",
+        "all-properties": "All properties",
+        "select-properties": "Select properties in this group"
+      },
+      "customer-segment-property-values": {
+        "title": "Select properties for filtering",
+        "customer-properties": "Customer properties:"
+      },
+      "customer-segment-preview": {
+        "title": "Organization & contacts",
+        "labels": {
+          "type": "Type",
+          "name": "Name"
+        }
+      }
+    }
+  },
+  "permissions": {
+    "virtoCommerceDemoCustomerSegmentsModule:access": "Open VirtoCommerceDemoCustomerSegmentsModule menu",
+    "virtoCommerceDemoCustomerSegmentsModule:create": "Create VirtoCommerceDemoCustomerSegmentsModule related data",
+    "virtoCommerceDemoCustomerSegmentsModule:read": "View VirtoCommerceDemoCustomerSegmentsModule related data",
+    "virtoCommerceDemoCustomerSegmentsModule:update": "Update VirtoCommerceDemoCustomerSegmentsModule related data",
+    "virtoCommerceDemoCustomerSegmentsModule:delete": "Delete VirtoCommerceDemoCustomerSegmentsModule related data"
+  },
+  "settings": {
+    "VirtoCommerceDemoCustomerSegmentsModule": {
+      "VirtoCommerceDemoCustomerSegmentsModulePassword": {
+        "title": "VirtoCommerceDemoCustomerSegmentsModule Password",
+        "description": "VirtoCommerceDemoCustomerSegmentsModule Password setting"
+      },
+      "VirtoCommerceDemoCustomerSegmentsModuleEnabled": {
+        "title": "VirtoCommerceDemoCustomerSegmentsModule Enabled",
+        "description": "VirtoCommerceDemoCustomerSegmentsModule Enabled setting"
+      }
+    }
+  }
+}

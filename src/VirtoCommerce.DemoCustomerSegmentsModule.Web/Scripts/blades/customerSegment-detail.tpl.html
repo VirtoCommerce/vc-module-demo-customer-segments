@@ -1,0 +1,39 @@
+<div class="blade-static __bottom">
+    <button class="btn" ng-disabled="!canSave()">{{ 'platform.commands.create' | translate }}</button>
+</div>
+<div class="blade-content __normal">
+    <div class="blade-inner">
+        <div class="inner-block">
+            <form class="form" name="formScope">
+                <fieldset>
+                    <div class="form-group __info list">
+                        <label class="form-label">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.segment-name' | translate }}</label>
+                        <div class="form-input">
+                            <input focus-on="" ng-model="blade.currentEntity.name" required ng-maxlength="128">
+                        </div>
+                    </div>
+                    <div class="form-group __info list">
+                        <label class="form-label">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.segment-description' | translate }}</label>
+                        <div class="form-input">
+                            <textarea cols="30" rows="5" ng-model="blade.currentEntity.description"></textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="form-group">
+                    <ul class="list __items">
+                        <li class="list-item" ng-class="{'__selected': blade.activeBladeId === 'mainParameters'}" ng-click="mainParameters()">
+                            <i class="list-ico fa fa-cogs" aria-hidden="true"></i>
+                            <span class="list-t">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.main-parameters' | translate }}</span>
+                            <span class="list-descr">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.main-parameters-description' | translate: {count: filledPropertiesCount, total: totalPropertiesCount} }}</span>
+                        </li>
+                        <li class="list-item" ng-class="{'__selected': blade.activeBladeId === 'createCustomerSegmentRule', '__disabled': blade.currentEntity.storeIds == null}" ng-click="createCustomerFilter()">
+                            <i class="list-ico fa fa-cogs" aria-hidden="true"></i>
+                            <span class="list-t">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.segment-rule' | translate }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

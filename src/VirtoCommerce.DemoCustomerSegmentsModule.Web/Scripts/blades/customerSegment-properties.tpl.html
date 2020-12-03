@@ -1,0 +1,20 @@
+<div class="blade-static __bottom" ng-include="'$(Platform)/Scripts/common/templates/ok-cancel.tpl.html'"></div>
+<div class="blade-content">
+    <div class="blade-inner">
+        <div class="inner-block">
+            <div class="form-group">
+                <label class="form-label">
+                    {{'demoCustomerSegmentsModule.blades.customer-segment-properties.all-properties' | translate}}
+                </label>
+                <a class="btn-ico fa fa-check-circle" ng-click="selectAll()"></a>
+                <a class="btn-ico fa fa-times-circle" ng-click="clearAll()"></a>
+                <ui-select multiple ng-model="blade.selectedProperties" on-select="sortSelected($item, $model)">
+                    <ui-select-match placeholder="{{'demoCustomerSegmentsModule.blades.customer-segment-properties.select-properties' | translate}}">{{$item.name}}</ui-select-match>
+                    <ui-select-choices repeat="x in blade.availableProperties | orderBy: 'name' | filter: { name: $select.search } track by x.name">
+                        <span ng-bind-html="x.name | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+</div>

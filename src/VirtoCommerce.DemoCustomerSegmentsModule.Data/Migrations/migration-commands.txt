@@ -1,0 +1,5 @@
+Customer segment:
+Add-Migration MigrationName -Context VirtoCommerce.DemoCustomerSegmentsModule.Data.Repositories.DemoCustomerSegmentDbContext -Verbose -OutputDir Migrations -Project VirtoCommerce.DemoCustomerSegmentsModule.Data -StartupProject VirtoCommerce.DemoCustomerSegmentsModule.Data -Debug
+Update-Database MigrationName -Context VirtoCommerce.DemoCustomerSegmentsModule.Data.Repositories.DemoCustomerSegmentDbContext -Project VirtoCommerce.DemoCustomerSegmentsModule.Data -StartupProject VirtoCommerce.DemoCustomerSegmentsModule.Data -Debug
+Remove-Migration -Context VirtoCommerce.DemoCustomerSegmentsModule.Data.Repositories.DemoCustomerSegmentDbContext -Verbose -Project VirtoCommerce.DemoCustomerSegmentsModule.Data -StartupProject VirtoCommerce.DemoCustomerSegmentsModule.Data -Debug
+
