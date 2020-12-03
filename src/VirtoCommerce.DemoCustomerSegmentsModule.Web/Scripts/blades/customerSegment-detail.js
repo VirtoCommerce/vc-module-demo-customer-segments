@@ -1,6 +1,6 @@
 angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentDetailController',
-    ['$scope', 'platformWebApp.bladeNavigationService', function ($scope, bladeNavigationService) {
+    ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', function ($scope, bladeNavigationService, settings) {
         const blade = $scope.blade;
         blade.headIcon = 'fa-pie-chart';
         blade.isLoading = false;
@@ -8,8 +8,22 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 
         blade.currentEntity = {};
 
+        $scope.groups = settings.getValues({ id: 'Customer.MemberGroups' });
+
         $scope.canSave = () => {
             return false;
+        };
+
+        $scope.openGroupsDictionarySettingManagement = function () {
+            var newBlade = {
+                id: 'settingDetailChild',
+                isApiSave: true,
+                currentEntityId: 'Customer.MemberGroups',
+                parentRefresh: function (data) { $scope.groups = data; },
+                controller: 'platformWebApp.settingDictionaryController',
+                template: '$(Platform)/Scripts/app/settings/blades/setting-dictionary.tpl.html'
+            };
+            bladeNavigationService.showBlade(newBlade, blade);
         };
 
         $scope.mainParameters = function () {
