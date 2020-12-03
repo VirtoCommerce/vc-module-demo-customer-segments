@@ -84,7 +84,6 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                         if (remove) {
                             bladeNavigationService.closeChildrenBlades(blade, function () {
                                 blade.isLoading = true;
-                                var itemIds = _.pluck(list, 'id');
                                 // TODO: delete segments
                                 blade.refresh();
                             });
