@@ -68,7 +68,7 @@
     "dialogs": {
       "customer-segment-delete": {
         "title": "Delete confirmation",
-        "message": "Customer segments will be deleted and the customers of this segments will no longer be receiving the tagged promotions"
+        "message": "Customer {{segments}} will be deleted and the customers of this {{count}} will no longer be receiving the tagged promotions"
       }
     }
   },
