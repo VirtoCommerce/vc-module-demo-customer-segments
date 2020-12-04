@@ -1,9 +1,29 @@
 angular.module('virtoCommerce.DemoCustomerSegmentsModule')
-    .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentListController', ['$scope', 'platformWebApp.dialogService', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', '$timeout',
-        function ($scope, dialogService, bladeUtils, uiGridHelper, $timeout) {
+    .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentListController', ['$scope', 'platformWebApp.dialogService', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', '$timeout', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi',
+        function ($scope, dialogService, bladeUtils, uiGridHelper, $timeout, customerSegmentsApi) {
             const blade = $scope.blade;
             blade.headIcon = 'fa-pie-chart';
             const bladeNavigationService = bladeUtils.bladeNavigationService;
+
+            blade.refresh = function () {
+                blade.isLoading = true;
+
+                if ($scope.pageSettings.currentPage !== 1) {
+                    $scope.pageSettings.currentPage = 1;
+                }
+
+                customerSegmentsApi.search(getSearchCriteria(), function (data) {
+                    blade.isLoading = false;
+                    $scope.pageSettings.totalItems = data.totalCount;
+                    blade.currentEntities = data.results;
+                    $scope.hasMore = data.results.length === $scope.pageSettings.itemsPerPageCount;
+
+                    if ($scope.gridApi) {
+                        $scope.gridApi.infiniteScroll.resetScroll(true, true);
+                        $scope.gridApi.infiniteScroll.dataLoaded();
+                    }
+                });
+            };
 
             blade.toolbarCommands = [
                 {
@@ -19,6 +39,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                                 id: 'customerSegmentDetail',
                                 title: 'demoCustomerSegmentsModule.blades.customer-segment-detail.title',
                                 subtitle: 'demoCustomerSegmentsModule.blades.customer-segment-detail.subtitle',
+                                isNew: true,
                                 controller: 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentDetailController',
                                 template: 'Modules/$(virtoCommerce.DemoCustomerSegmentsModule)/Scripts/blades/customerSegment-detail.tpl.html'
                             };
@@ -40,24 +61,29 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 }
             ];
 
-            blade.refresh = function () {
-                blade.isLoading = true;
-
-                if ($scope.pageSettings.currentPage !== 1) {
-                    $scope.pageSettings.currentPage = 1;
-                }
-                // TODO: Get segments
-                blade.isLoading = false;
-            };
-
             function showMore() {
                 if ($scope.hasMore) {
                     ++$scope.pageSettings.currentPage;
                     $scope.gridApi.infiniteScroll.saveScrollPercentage();
                     blade.isLoading = true;
-                    // TODO: Get segments
-                    blade.isLoading = false;
+
+                    customerSegmentsApi.search(getSearchCriteria(), function (data) {
+                        blade.isLoading = false;
+                        $scope.pageSettings.totalItems = data.totalCount;
+                        blade.currentEntities = blade.currentEntities.concat(data.results);
+                        $scope.hasMore = data.results.length === $scope.pageSettings.itemsPerPageCount;
+                        $scope.gridApi.infiniteScroll.dataLoaded();
+                    });
                 }
+            }
+
+            function getSearchCriteria() {
+                return {
+                    keyword: filter.keyword,
+                    sort: uiGridHelper.getSortExpression($scope),
+                    skip: ($scope.pageSettings.currentPage - 1) * $scope.pageSettings.itemsPerPageCount,
+                    take: $scope.pageSettings.itemsPerPageCount
+                };
             }
 
             $scope.selectNode = function (node) {
@@ -67,7 +93,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                     id: 'customerSegmentDetail',
                     currentEntityId: node.id,
                     title: node.name,
-                    subtitle: blade.subtitle,
+                    subtitle: 'demoCustomerSegmentsModule.blades.customer-segment-detail.subtitle',
                     controller: 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentDetailController',
                     template: 'Modules/$(virtoCommerce.DemoCustomerSegmentsModule)/Scripts/blades/customerSegment-detail.tpl.html'
                 };
@@ -80,12 +106,15 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                     id: "confirmDeleteItem",
                     title: "demoCustomerSegmentsModule.dialogs.customer-segment-delete.title",
                     message: "demoCustomerSegmentsModule.dialogs.customer-segment-delete.message",
+                    messageValues: list.length > 1 ? {segments: 'segments', count: 'segments'} : {segments: `segment ${list[0].name}`, count: 'segment'},
                     callback: function (remove) {
                         if (remove) {
                             bladeNavigationService.closeChildrenBlades(blade, function () {
                                 blade.isLoading = true;
-                                // TODO: delete segments
-                                blade.refresh();
+                                var itemIds = _.pluck(list, 'id');
+                                customerSegmentsApi.delete({ ids: itemIds }, function () {
+                                    blade.refresh();
+                                });
                             });
                         }
                     }
