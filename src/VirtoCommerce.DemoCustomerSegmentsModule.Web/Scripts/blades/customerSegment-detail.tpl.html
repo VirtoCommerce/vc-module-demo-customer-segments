@@ -27,7 +27,7 @@
                             <span class="list-t">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.main-parameters' | translate }}</span>
                             <span class="list-descr">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.main-parameters-description' | translate: {count: filledPropertiesCount, total: totalPropertiesCount} }}</span>
                         </li>
-                        <li class="list-item" ng-class="{'__selected': blade.activeBladeId === 'createCustomerSegmentRule', '__disabled': blade.currentEntity.storeIds == null}" ng-click="createCustomerFilter()">
+                        <li class="list-item" ng-class="{'__selected': blade.activeBladeId === 'createCustomerSegmentRule', '__disabled': !blade.currentEntity.storeIds || !blade.currentEntity.storeIds.length}" ng-click="createCustomerFilter()">
                             <i class="list-ico fa fa-cogs" aria-hidden="true"></i>
                             <span class="list-t">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.segment-rule' | translate }}</span>
                         </li>
