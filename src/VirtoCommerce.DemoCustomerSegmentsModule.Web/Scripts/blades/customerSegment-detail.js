@@ -1,14 +1,29 @@
 angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentDetailController',
     ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', function ($scope, bladeNavigationService, settings) {
+    ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi', function ($scope, bladeNavigationService, customerSegmentsApi) {
         const blade = $scope.blade;
         blade.headIcon = 'fa-pie-chart';
-        blade.isLoading = false;
         blade.activeBladeId = null;
 
         blade.currentEntity = {};
 
         $scope.groups = settings.getValues({ id: 'Customer.MemberGroups' });
+
+        blade.refresh = function () {
+            if (blade.isNew) {
+                customerSegmentsApi.new({},
+                    data => {
+                        blade.currentEntity = data;
+                        blade.isLoading = false;
+                    });
+            } else {
+                customerSegmentsApi.get({ id: blade.currentEntityId }, data => {
+                    blade.currentEntity = data;
+                    blade.isLoading = false;
+                });
+            }
+        }
 
         $scope.canSave = () => {
             return false;
@@ -66,8 +81,9 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 $scope.filledPropertiesCount += blade.currentEntity.isActive !== undefined ? 1 : 0;
                 $scope.filledPropertiesCount += blade.currentEntity.startDate ? 1 : 0;
                 $scope.filledPropertiesCount += blade.currentEntity.endDate ? 1 : 0;
-                $scope.filledPropertiesCount += blade.currentEntity.storeIds ? 1 : 0;
+                $scope.filledPropertiesCount += blade.currentEntity.storeIds && blade.currentEntity.storeIds.length ? 1 : 0;
             }
         }, true);
 
+        blade.refresh();
     }]);
