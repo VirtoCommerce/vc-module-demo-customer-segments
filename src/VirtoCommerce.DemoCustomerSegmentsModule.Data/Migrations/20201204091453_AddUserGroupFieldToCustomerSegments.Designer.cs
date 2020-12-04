@@ -10,7 +10,7 @@ using VirtoCommerce.DemoCustomerSegmentsModule.Data.Repositories;
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Migrations
 {
     [DbContext(typeof(DemoCustomerSegmentDbContext))]
-    [Migration("20201203122551_AddUserGroupFieldToCustomerSegments")]
+    [Migration("20201204091453_AddUserGroupFieldToCustomerSegments")]
     partial class AddUserGroupFieldToCustomerSegments
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,7 +65,8 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserGroup")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(64)")
+                        .HasMaxLength(64);
 
                     b.HasKey("Id");
 

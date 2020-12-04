@@ -63,7 +63,8 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserGroup")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(64)")
+                        .HasMaxLength(64);
 
                     b.HasKey("Id");
 

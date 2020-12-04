@@ -9,6 +9,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Migrations
             migrationBuilder.AddColumn<string>(
                 name: "UserGroup",
                 table: "DemoCustomerSegments",
+                maxLength: 64,
                 nullable: true);
         }
 

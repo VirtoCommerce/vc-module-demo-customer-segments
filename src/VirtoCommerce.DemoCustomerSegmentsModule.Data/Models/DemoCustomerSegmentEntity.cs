@@ -19,6 +19,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Models
         [StringLength(1024)]
         public string Description { get; set; }
 
+        [StringLength(64)]
         public string UserGroup { get; set; }
 
         public bool IsActive { get; set; }

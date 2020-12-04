@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201203122551_AddUserGroupFieldToCustomerSegments.cs" />
+    <Compile Remove="Migrations\20201203122551_AddUserGroupFieldToCustomerSegments.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\VirtoCommerce.DemoCustomerSegmentsModule.Core\VirtoCommerce.DemoCustomerSegmentsModule.Core.csproj" />
   </ItemGroup>
 
