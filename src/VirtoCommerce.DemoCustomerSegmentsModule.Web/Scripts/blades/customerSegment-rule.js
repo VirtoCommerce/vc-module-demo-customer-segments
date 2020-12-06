@@ -7,12 +7,12 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
         blade.isLoading = true;
         blade.activeBladeId = null;
 
+        const expressionTreeDemoBlockCustomerSegmentRuleId = "DemoBlockCustomerSegmentRule"
+
         blade.propertiesCount = 0;
         blade.selectedPropertiesCount = 0;
         blade.customersCount = 0;
-
-        blade.currentEntity = {};
-        blade.selectedProperties = [];
+               
 
         var properties = [];
 
@@ -33,6 +33,25 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 });
 
             blade.currentEntity = angular.copy(blade.originalEntity);
+
+            const customerSegmentRuleBlock = blade.currentEntity.expressionTree.children.find(x => x.id === expressionTreeDemoBlockCustomerSegmentRuleId);
+
+            if (!customerSegmentRuleBlock) {
+                throw new Error(expressionTreeDemoBlockCustomerSegmentRuleId + " block is missed in expression tree");
+            }
+
+            if (customerSegmentRuleBlock.children[0]) {
+                blade.originalProperties = customerSegmentRuleBlock.children[0].properties;
+                blade.selectedPropertiesCount = blade.originalProperties.length;
+            } else {
+                blade.originalProperties = [];
+            }
+
+            blade.selectedProperties = angular.copy(blade.originalProperties);
+        }
+
+        function isDirty() {
+            return !angular.equals(blade.selectedProperties, blade.originalProperties);
         }
 
         $scope.selectProperties = function () {
@@ -67,24 +86,36 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 onSelected: function (entity, selectedProperties) {
                     blade.currentEntity = entity;
                     blade.selectedProperties = selectedProperties;
-                    let searchCriteria = customerSearchCriteriaBuilder.build('', blade.selectedProperties, blade.currentEntity.storeIds);
-                    searchCriteria.skip = 0;
-                    searchCriteria.take = 0;
-                    membersApi.search(searchCriteria, searchResult => {
-                        blade.customersCount = searchResult.totalCount;
-                    });
+                    getCustomersCount();
                 }
             };
             blade.activeBladeId = newBlade.id;
             bladeNavigationService.showBlade(newBlade, blade);
         };
 
+        function getCustomersCount() {
+            let searchCriteria = customerSearchCriteriaBuilder.build('', blade.selectedProperties, blade.currentEntity.storeIds);
+            searchCriteria.skip = 0;
+            searchCriteria.take = 0;
+            membersApi.search(searchCriteria, searchResult => {
+                blade.customersCount = searchResult.totalCount;
+            });
+        }
+
         $scope.canSave = () => {
-            return blade.selectedProperties && blade.selectedProperties.length && blade.selectedProperties.every(x => x.values && x.values.length);
+            return isDirty() && blade.selectedProperties && blade.selectedProperties.length && blade.selectedProperties.every(x => x.values && x.values.length);
         };
 
         $scope.saveChanges = function() {
             if (blade.onSelected) {
+                const customerSegmentRuleBlock = blade.currentEntity.expressionTree.children.find(x => x.id === expressionTreeDemoBlockCustomerSegmentRuleId);
+                customerSegmentRuleBlock.children = [];
+
+                customerSegmentRuleBlock.children.push({
+                    id: expressionTreeDemoBlockCustomerSegmentRuleId,
+                    properties: blade.selectedProperties
+                });
+
                 blade.onSelected(blade.currentEntity);
             }
 

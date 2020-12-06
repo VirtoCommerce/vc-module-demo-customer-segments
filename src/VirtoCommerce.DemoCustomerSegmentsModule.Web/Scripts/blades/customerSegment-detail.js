@@ -5,28 +5,45 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
         const blade = $scope.blade;
         blade.headIcon = 'fa-pie-chart';
         blade.activeBladeId = null;
-
         blade.currentEntity = {};
 
         $scope.groups = settings.getValues({ id: 'Customer.MemberGroups' });
 
-        blade.refresh = function () {
+        blade.refresh = function (parentRefresh) {
             if (blade.isNew) {
                 customerSegmentsApi.new({},
                     data => {
-                        blade.currentEntity = data;
+                        blade.originalEntity = data;
+                        blade.currentEntity = angular.copy(blade.originalEntity);
                         blade.isLoading = false;
                     });
             } else {
                 customerSegmentsApi.get({ id: blade.currentEntityId }, data => {
-                    blade.currentEntity = data;
+                    blade.originalEntity = data;
+                    blade.currentEntity = angular.copy(blade.originalEntity);
+                    blade.mainParametersAreSet = true;
+                    blade.ruleIsSet = true;
                     blade.isLoading = false;
                 });
             }
+
+            if (parentRefresh) {
+                blade.parentBlade.refresh();
+            }
         }
 
+        blade.onClose = function (closeCallback) {
+            bladeNavigationService.showConfirmationIfNeeded(isDirty() && !blade.isNew, $scope.isValid(), blade, $scope.saveChanges, closeCallback, "marketing.dialogs.promotion-save.title", "marketing.dialogs.promotion-save.message");
+        };
+
+        $scope.setForm = (form) => { formScope = form; };
+
+        $scope.isValid = function () {
+            return formScope && formScope.$valid;
+        };
+
         $scope.canSave = () => {
-            return false;
+            return isDirty() && $scope.isValid() && blade.mainParametersAreSet && blade.ruleIsSet;
         };
 
         $scope.openGroupsDictionarySettingManagement = function () {
@@ -41,6 +58,27 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             bladeNavigationService.showBlade(newBlade, blade);
         };
 
+        function isDirty() {
+            return !angular.equals(blade.currentEntity, blade.originalEntity);
+        }
+
+
+        $scope.saveChanges = function () {
+           
+            if (blade.isNew) {
+                customerSegmentsApi.update({}, blade.currentEntity, function (data) {
+                    blade.isNew = undefined;
+                    blade.currentEntityId = data.id;                    
+                    blade.refresh(true);
+                });
+            } else {
+                customerSegmentsApi.update({}, blade.currentEntity, function (data) {
+                    blade.refresh(true);
+                });
+            }
+        }
+
+
         $scope.mainParameters = function () {
             const parametersBlade = {
                 id: "mainParameters",
@@ -51,6 +89,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 originalEntity: blade.currentEntity,
                 onSelected: function (entity) {
                     blade.currentEntity = entity;
+                    blade.mainParametersAreSet = true;
                 }
             };
             blade.activeBladeId = parametersBlade.id;
@@ -67,6 +106,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                     originalEntity: blade.currentEntity,
                     onSelected: function (entity) {
                         blade.currentEntity = entity;
+                        blade.ruleIsSet = true;
                     }
                 };
                 blade.activeBladeId = ruleCreationBlade.id;
