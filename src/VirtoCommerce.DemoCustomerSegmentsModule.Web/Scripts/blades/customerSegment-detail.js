@@ -36,6 +36,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             bladeNavigationService.showConfirmationIfNeeded(isDirty() && !blade.isNew, $scope.isValid(), blade, $scope.saveChanges, closeCallback, "marketing.dialogs.promotion-save.title", "marketing.dialogs.promotion-save.message");
         };
 
+        var formScope;
         $scope.setForm = (form) => { formScope = form; };
 
         $scope.isValid = function () {
