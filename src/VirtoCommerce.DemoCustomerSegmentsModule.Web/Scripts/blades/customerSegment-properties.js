@@ -43,7 +43,6 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
         $scope.saveChanges = function () {
             blade.parentBlade.activeBladeId = null;
             if (blade.onSelected) {
-                blade.currentEntity
                 blade.onSelected(blade.currentEntity, blade.selectedProperties);
                 bladeNavigationService.closeBlade(blade);
             }
