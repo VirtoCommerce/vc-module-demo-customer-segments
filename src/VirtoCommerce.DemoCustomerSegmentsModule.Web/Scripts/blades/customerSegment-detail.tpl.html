@@ -1,5 +1,5 @@
 <div class="blade-static __bottom">
-    <button class="btn" ng-disabled="!canSave()">{{ blade.isNew ? 'platform.commands.create' : 'platform.commands.update' | translate }}</button>
+    <button class="btn" ng-disabled="!canSave()" ng-click="saveChanges()">{{ blade.isNew ? 'platform.commands.create' : 'platform.commands.update' | translate }}</button>
 </div>
 <div class="blade-content __normal">
     <div class="blade-inner">

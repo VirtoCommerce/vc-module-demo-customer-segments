@@ -17,14 +17,11 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                         blade.currentEntity = angular.copy(blade.originalEntity);
                         blade.isLoading = false;
                     });
-            } else {
-                customerSegmentsApi.get({ id: blade.currentEntityId }, data => {
-                    blade.originalEntity = data;
-                    blade.currentEntity = angular.copy(blade.originalEntity);
-                    blade.mainParametersAreSet = true;
-                    blade.ruleIsSet = true;
-                    blade.isLoading = false;
-                });
+            } else {              
+                blade.currentEntity = angular.copy(blade.originalEntity);
+                blade.mainParametersAreSet = true;
+                blade.ruleIsSet = true;
+                blade.isLoading = false;                
             }
 
             if (parentRefresh) {
@@ -67,13 +64,14 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
         $scope.saveChanges = function () {
            
             if (blade.isNew) {
-                customerSegmentsApi.update({}, blade.currentEntity, function (data) {
+                customerSegmentsApi.update({}, [blade.currentEntity], function (data) {                    
                     blade.isNew = undefined;
-                    blade.currentEntityId = data.id;                    
+                    blade.originalEntity = data[0];                    
                     blade.refresh(true);
                 });
             } else {
-                customerSegmentsApi.update({}, blade.currentEntity, function (data) {
+                customerSegmentsApi.update({}, [blade.currentEntity], function (data) {
+                    blade.originalEntity = angular.copy(blade.currentEntity);
                     blade.refresh(true);
                 });
             }
