@@ -30,7 +30,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
         }
 
         blade.onClose = function (closeCallback) {
-            bladeNavigationService.showConfirmationIfNeeded(isDirty() && !blade.isNew, $scope.isValid(), blade, $scope.saveChanges, closeCallback, "marketing.dialogs.promotion-save.title", "marketing.dialogs.promotion-save.message");
+            bladeNavigationService.showConfirmationIfNeeded(isDirty() && !blade.isNew, $scope.isValid(), blade, $scope.saveChanges, closeCallback, "demoCustomerSegmentsModule.dialogs.customer-segment-save.title", "demoCustomerSegmentsModule.dialogs.customer-segment-save.message");
         };
 
         var formScope;
@@ -66,7 +66,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             if (blade.isNew) {
                 customerSegmentsApi.update({}, [blade.currentEntity], function (data) {                    
                     blade.isNew = undefined;
-                    blade.originalEntity = data[0];                    
+                    blade.originalEntity = data[0];
                     blade.refresh(true);
                 });
             } else {

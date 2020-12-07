@@ -70,6 +70,10 @@
         "title": "Delete confirmation",
         "one-segment-message": "Customer segment {{name}} will be deleted and the customers of this segment will no longer be receiving the tagged promotions",
         "many-segments-message": "Customer segments will be deleted and the customers of this segments will no longer be receiving the tagged promotions"
+      },
+      "customer-segment-save": {
+        "title": "Save changes",
+        "message": "The segment has been modified. Do you want to save changes?"
       }
     }
   },
