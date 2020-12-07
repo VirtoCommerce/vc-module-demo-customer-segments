@@ -105,8 +105,8 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 var dialog = {
                     id: "confirmDeleteItem",
                     title: "demoCustomerSegmentsModule.dialogs.customer-segment-delete.title",
-                    message: "demoCustomerSegmentsModule.dialogs.customer-segment-delete.message",
-                    messageValues: list.length > 1 ? {segments: 'segments', count: 'segments'} : {segments: `segment ${list[0].name}`, count: 'segment'},
+                    message: list.length > 1 ? "demoCustomerSegmentsModule.dialogs.customer-segment-delete.many-segments-message" : "demoCustomerSegmentsModule.dialogs.customer-segment-delete.one-segment-message",
+                    messageValues: list.length === 1 && {name: list[0].name},
                     callback: function (remove) {
                         if (remove) {
                             bladeNavigationService.closeChildrenBlades(blade, function () {
