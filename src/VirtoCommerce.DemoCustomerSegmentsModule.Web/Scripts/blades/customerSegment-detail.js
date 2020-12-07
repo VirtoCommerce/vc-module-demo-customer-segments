@@ -1,7 +1,7 @@
 angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentDetailController',
     ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', function ($scope, bladeNavigationService, settings) {
-    ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi', function ($scope, bladeNavigationService, customerSegmentsApi) {
+    ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi', function ($scope, bladeNavigationService, dialogService, customerSegmentsApi) {
         const blade = $scope.blade;
         blade.headIcon = 'fa-pie-chart';
         blade.activeBladeId = null;
@@ -62,21 +62,38 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 
 
         $scope.saveChanges = function () {
-           
             if (blade.isNew) {
-                customerSegmentsApi.update({}, [blade.currentEntity], function (data) {                    
+                customerSegmentsApi.update({}, [blade.currentEntity], function (data) {
                     blade.isNew = undefined;
                     blade.originalEntity = data[0];
                     blade.refresh(true);
-                });
-            } else {
-                customerSegmentsApi.update({}, [blade.currentEntity], function (data) {
-                    blade.originalEntity = angular.copy(blade.currentEntity);
-                    blade.refresh(true);
-                });
-            }
-        }
+                    $scope.closeBlade();
 
+                    const dialog = {
+                        id: "customerSegmentCreatedDialog",
+                        title: 'demoCustomerSegmentsModule.dialogs.customer-segment-created-successfully.title',
+                        message: 'demoCustomerSegmentsModule.dialogs.customer-segment-created-successfully.message'
+                    };
+
+                    dialogService.showNotificationDialog(dialog);
+                });
+                }
+            else {
+                customerSegmentsApi.update({}, [blade.currentEntity], function (data) {                    
+                    blade.originalEntity = data[0];
+                    blade.refresh(true);
+                    $scope.closeBlade();
+
+                    const dialog = {
+                        id: "customerSegmentUpdatedDialog",
+                        title: 'demoCustomerSegmentsModule.dialogs.customer-segment-updated-successfully.title',
+                        message: 'demoCustomerSegmentsModule.dialogs.customer-segment-updated-successfully.message'
+                    };
+
+                    dialogService.showNotificationDialog(dialog);
+                });
+            }                            
+        }
 
         $scope.mainParameters = function () {
             const parametersBlade = {
@@ -123,6 +140,11 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 $scope.filledPropertiesCount += blade.currentEntity.storeIds && blade.currentEntity.storeIds.length ? 1 : 0;
             }
         }, true);
+
+        $scope.closeBlade = function () {
+            blade.parentBlade.activeBladeId = null;
+            bladeNavigationService.closeBlade(blade);
+        };
 
         blade.refresh();
     }]);

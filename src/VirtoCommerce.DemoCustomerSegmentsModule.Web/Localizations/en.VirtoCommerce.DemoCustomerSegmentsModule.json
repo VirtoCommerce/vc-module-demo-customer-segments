@@ -74,6 +74,14 @@
       "customer-segment-save": {
         "title": "Save changes",
         "message": "The segment has been modified. Do you want to save changes?"
+      },
+      "customer-segment-created-successfully": {
+        "title": "Customer segment created",
+        "message": "The customer segment has been created successfully."
+      },
+      "customer-segment-updated-successfully": {
+        "title": "Customer segment updated",
+        "message": "The customer segment has been updated successfully."
       }
     }
   },
