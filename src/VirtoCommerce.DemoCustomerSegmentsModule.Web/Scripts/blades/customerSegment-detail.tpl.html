@@ -21,7 +21,7 @@
                     <div class="form-group __info list">
                         <label class="form-label">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.user-group' | translate }}  <a href="" ng-click="openGroupsDictionarySettingManagement()" class="form-edit" va-permission="platform:setting:update"><i class="form-ico fa fa-pencil"></i></a></label>
                         <div class="form-input" data-role="input-control">
-                            <ui-select ng-model="blade.currentEntity.group">
+                            <ui-select ng-model="blade.currentEntity.userGroup">
                                 <ui-select-match allow-clear="true" placeholder="{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.user-group-placeholder' | translate }}">{{$select.selected}}</ui-select-match>
                                 <ui-select-choices repeat="x in groups | filter: $select.search">
                                     <span ng-bind-html="x | highlight: $select.search"></span>

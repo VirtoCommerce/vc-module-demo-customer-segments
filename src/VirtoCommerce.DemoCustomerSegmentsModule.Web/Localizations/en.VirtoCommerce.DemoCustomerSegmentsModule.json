@@ -16,7 +16,7 @@
         "segment-rule": "Segment rule",
         "segment-rule-description": "17 customers in the current filter",
         "user-group": "User group",
-        "user-group-placeholder": "Select user group"
+        "user-group-placeholder": "Select user group",
         "title": "New segment",
         "subtitle": "Customer rule based segment"
       },

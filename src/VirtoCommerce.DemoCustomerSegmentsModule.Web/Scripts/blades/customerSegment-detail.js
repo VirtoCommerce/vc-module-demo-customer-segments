@@ -1,7 +1,6 @@
 angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentDetailController',
-    ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', function ($scope, bladeNavigationService, settings) {
-    ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi', function ($scope, bladeNavigationService, dialogService, customerSegmentsApi) {
+        ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', 'platformWebApp.dialogService', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi', function ($scope, bladeNavigationService, settings, dialogService, customerSegmentsApi) {
         const blade = $scope.blade;
         blade.headIcon = 'fa-pie-chart';
         blade.activeBladeId = null;
