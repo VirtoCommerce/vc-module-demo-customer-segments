@@ -4,7 +4,7 @@
       "customer-segment-list": {
         "labels": {
           "name": "Segment name",
-          "isActive": "Is active",
+          "is-active": "Is active",
           "last-modified": "Modified"
         }
       },
