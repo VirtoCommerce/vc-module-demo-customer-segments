@@ -8,6 +8,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
         blade.activeBladeId = null;
 
         const expressionTreeDemoBlockCustomerSegmentRuleId = "DemoBlockCustomerSegmentRule"
+        const expressionTreeDemoConditionPropertyValuesId = "DemoConditionPropertyValues";
 
         blade.propertiesCount = 0;
         blade.selectedPropertiesCount = 0;
@@ -112,7 +113,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 customerSegmentRuleBlock.children = [];
 
                 customerSegmentRuleBlock.children.push({
-                    id: expressionTreeDemoBlockCustomerSegmentRuleId,
+                    id: expressionTreeDemoConditionPropertyValuesId,
                     properties: blade.selectedProperties
                 });
 
