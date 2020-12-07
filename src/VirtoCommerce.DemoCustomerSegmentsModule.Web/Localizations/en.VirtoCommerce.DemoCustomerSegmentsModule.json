@@ -7,7 +7,9 @@
         "main-parameters": "Main parameters",
         "main-parameters-description": "{{count}} of {{total}} properties filled",
         "segment-rule": "Segment rule",
-        "segment-rule-description": "17 customers in the current filter"
+        "segment-rule-description": "17 customers in the current filter",
+        "user-group": "User group",
+        "user-group-placeholder": "Select user group"
       },
       "customer-segment-parameters": {
         "title": "Main parameters",
