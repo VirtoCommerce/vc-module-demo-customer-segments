@@ -1,6 +1,6 @@
 angular.module('virtoCommerce.DemoCustomerSegmentsModule')
-    .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentListController', ['$scope', 'platformWebApp.dialogService', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', '$timeout', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi',
-        function ($scope, dialogService, bladeUtils, uiGridHelper, $timeout, customerSegmentsApi) {
+    .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentListController', ['$scope', 'platformWebApp.dialogService', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi',
+        function ($scope, dialogService, bladeUtils, uiGridHelper, customerSegmentsApi) {
             const blade = $scope.blade;
             blade.headIcon = 'fa-pie-chart';
             const bladeNavigationService = bladeUtils.bladeNavigationService;
@@ -144,6 +144,6 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 
                 });
 
-                $timeout(function () {  blade.refresh(); });
+                blade.refresh();
             };
         }]);
