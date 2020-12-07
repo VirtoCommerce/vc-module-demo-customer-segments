@@ -91,7 +91,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 
                 var newBlade = {
                     id: 'customerSegmentDetail',
-                    currentEntityId: node.id,
+                    originalEntity: node,
                     title: node.name,
                     subtitle: 'demoCustomerSegmentsModule.blades.customer-segment-detail.subtitle',
                     controller: 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentDetailController',
