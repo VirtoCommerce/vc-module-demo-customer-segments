@@ -6,13 +6,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.CoreModule.Core.Conditions;
+using VirtoCommerce.CustomerModule.Core;
+using VirtoCommerce.CustomerModule.Data.Search.Indexing;
+using VirtoCommerce.DemoCustomerSegmentsModule.Core.Events;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Services;
+using VirtoCommerce.DemoCustomerSegmentsModule.Data.Handlers;
 using VirtoCommerce.DemoCustomerSegmentsModule.Data.Repositories;
+using VirtoCommerce.DemoCustomerSegmentsModule.Data.Search.Indexing;
 using VirtoCommerce.DemoCustomerSegmentsModule.Data.Services;
 using VirtoCommerce.DemoCustomerSegmentsModule.Web.JsonConverters;
+using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Modularity;
+using VirtoCommerce.Platform.Core.Settings;
 
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
 {
@@ -32,6 +39,8 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
             serviceCollection.AddTransient<Func<IDemoCustomerSegmentRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IDemoCustomerSegmentRepository>());
             serviceCollection.AddTransient<IDemoCustomerSegmentService, DemoCustomerSegmentService>();
             serviceCollection.AddTransient<IDemoCustomerSegmentSearchService, DemoCustomerSegmentSearchService>();
+            serviceCollection.AddTransient<IndexMemberCustomerSegmentChangedEventHandler>();
+            serviceCollection.AddSingleton<MemberDocumentBuilder, DemoMemberDocumentBuilder>();
         }
 
         public void PostInitialize(IApplicationBuilder appBuilder)
@@ -41,6 +50,15 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
 
             AbstractTypeFactory<IConditionTree>.RegisterType<DemoBlockCustomerSegmentRule>();
             AbstractTypeFactory<IConditionTree>.RegisterType<DemoConditionPropertyValues>();
+
+            var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
+            inProcessBus.RegisterHandler<DemoCustomerSegmentChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<IndexMemberCustomerSegmentChangedEventHandler>().Handle(message));
+
+            var settingsManager = appBuilder.ApplicationServices.GetService<ISettingsManager>();
+            if (settingsManager.GetValue(ModuleConstants.Settings.General.EventBasedIndexation.Name, false))
+            {
+                inProcessBus.RegisterHandler<DemoCustomerSegmentChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<IndexMemberCustomerSegmentChangedEventHandler>().Handle(message));
+            }
 
             // Ensure that any pending migrations are applied
             using var serviceScope = appBuilder.ApplicationServices.CreateScope();
