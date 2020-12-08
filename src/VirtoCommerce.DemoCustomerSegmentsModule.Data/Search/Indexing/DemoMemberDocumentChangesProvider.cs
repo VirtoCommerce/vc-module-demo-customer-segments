@@ -14,14 +14,12 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Search.Indexing
     public class DemoMemberDocumentChangesProvider: MemberDocumentChangesProvider 
     {
         private readonly Func<IMemberRepository> _memberRepositoryFactory;
-        private readonly Func<IDemoCustomerSegmentRepository> _customerSegmentsRepositoryFactory;
         private readonly IChangeLogSearchService _changeLogSearchService;
 
-        public DemoMemberDocumentChangesProvider(Func<IMemberRepository> memberRepositoryFactory, Func<IDemoCustomerSegmentRepository> customerSegmentsRepositoryFactory,
+        public DemoMemberDocumentChangesProvider(Func<IMemberRepository> memberRepositoryFactory,
             IChangeLogSearchService changeLogSearchService) : base(memberRepositoryFactory, changeLogSearchService)
         {
             _memberRepositoryFactory = memberRepositoryFactory;
-            _customerSegmentsRepositoryFactory = customerSegmentsRepositoryFactory;
             _changeLogSearchService = changeLogSearchService;
         }
 
