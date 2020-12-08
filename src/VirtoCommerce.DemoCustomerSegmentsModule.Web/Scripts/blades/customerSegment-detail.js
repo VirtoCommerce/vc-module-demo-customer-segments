@@ -62,7 +62,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 
         $scope.saveChanges = function () {
             if (blade.isNew) {
-                customerSegmentsApi.update({}, [blade.currentEntity], function (data) {
+                customerSegmentsApi.save({}, [blade.currentEntity], function (data) {
                     blade.isNew = undefined;
                     blade.originalEntity = data[0];
                     blade.refresh(true);
@@ -78,7 +78,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 });
                 }
             else {
-                customerSegmentsApi.update({}, [blade.currentEntity], function (data) {                    
+                customerSegmentsApi.save({}, [blade.currentEntity], function (data) {                    
                     blade.originalEntity = data[0];
                     blade.refresh(true);
                     $scope.closeBlade();

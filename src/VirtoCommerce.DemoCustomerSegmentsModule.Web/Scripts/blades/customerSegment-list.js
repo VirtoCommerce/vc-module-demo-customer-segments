@@ -71,7 +71,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                         blade.isLoading = false;
                         $scope.pageSettings.totalItems = data.totalCount;
                         blade.currentEntities = blade.currentEntities.concat(data.results);
-                        $scope.hasMore = data.results.length === $scope.pageSettings.itemsPerPageCount;
+                        $scope.hasMore = data.results && data.results.length === $scope.pageSettings.itemsPerPageCount;
                         $scope.gridApi.infiniteScroll.dataLoaded();
                     });
                 }

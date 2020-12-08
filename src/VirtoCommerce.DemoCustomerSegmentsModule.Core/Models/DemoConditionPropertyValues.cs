@@ -6,6 +6,11 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Models
 {
     public class DemoConditionPropertyValues : ConditionTree
     {
-        public ICollection<DynamicObjectProperty> Properties { get; set; } = new List<DynamicObjectProperty>();
+        public DemoConditionPropertyValues()
+        {
+            Properties = new List<DynamicObjectProperty>();
+        }
+
+        public ICollection<DynamicObjectProperty> Properties { get; set; }
     }
 }
