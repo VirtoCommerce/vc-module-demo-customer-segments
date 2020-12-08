@@ -11,6 +11,7 @@ using VirtoCommerce.DemoCustomerSegmentsModule.Core.Services;
 using VirtoCommerce.DemoCustomerSegmentsModule.Data.Search.Indexing;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.Security;
+using VirtoCommerce.SearchModule.Core.Model;
 using Xunit;
 
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
@@ -99,7 +100,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
         };
 
         [Fact]
-        public async Task Should_Filter_By_Store()
+        public async Task Should_Filter_By_Store_And_Usual_Property()
         {
             var properties = new[] { _usualDynamicProperty };
             var storeIds = new[] { "Store1" };
@@ -122,13 +123,13 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
                 UserGroup = "Test", StoreIds = storeIds, ExpressionTree = new DemoCustomerSegmentTree()
             };
             segment.ExpressionTree.MergeFromPrototype(new DemoCustomerSegmentTreePrototype());
-            var block = segment.ExpressionTree.AvailableChildren
+            var block = segment.ExpressionTree.Children
                 .First(child => child.Id == nameof(DemoBlockCustomerSegmentRule));
             var condition = (DemoConditionPropertyValues)block.AvailableChildren
                 .First(child => child.Id == nameof(DemoConditionPropertyValues));
+            block.Children.Add(condition);
             condition.Properties = properties;
             condition.StoreIds = storeIds;
-            segment.ExpressionTree.Children = new List<IConditionTree> { block };
 
             var memberServiceMock = new Mock<IMemberService>();
             memberServiceMock
@@ -142,10 +143,17 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
 
             var documentBuilder = new DemoMemberDocumentBuilder(memberServiceMock.Object, segmentSearchServiceMock.Object);
             var documents = await documentBuilder.GetDocumentsAsync(new List<string> { "Customer1", "Customer2" });
-            var userGroups = documents.Select(document => document.Fields.FirstOrDefault(field => field.Name == "Groups")?.Value).ToArray();
 
-            Assert.Single(userGroups);
-            Assert.Equal("Test", userGroups.First());
+            var firstCustomerUserGroups = GetUserGroups(documents[0]);
+            Assert.Equal("Test", firstCustomerUserGroups.ToString());
+
+            var secondCustomerUserGroups = GetUserGroups(documents[1]);
+            Assert.Null(secondCustomerUserGroups);
+        }
+
+        private object GetUserGroups(IndexDocument document)
+        {
+            return document.Fields.FirstOrDefault(field => field.Name == "Groups")?.Value;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Models
                     .FirstOrDefault(dp => dp.Name.EqualsInvariant(property.Name));
                 var propertyValues = property.Values.Where(v => v.Value != null).ToArray();
 
-                if (dynamicProperty != null && propertyValues.IsNullOrEmpty())
+                if (dynamicProperty != null && !propertyValues.IsNullOrEmpty())
                 {
                     var dynamicPropertyValues = dynamicProperty.Values.Where(v => v.Value != null).ToArray();
                     hasPropertyValues = propertyValues.Aggregate(true, (current, propertyValue) =>
