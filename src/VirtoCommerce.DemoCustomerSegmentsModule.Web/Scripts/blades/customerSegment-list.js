@@ -5,14 +5,14 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             blade.headIcon = 'fa-pie-chart';
             const bladeNavigationService = bladeUtils.bladeNavigationService;
 
-            blade.refresh = function () {
+            blade.refresh = () => {
                 blade.isLoading = true;
 
                 if ($scope.pageSettings.currentPage !== 1) {
                     $scope.pageSettings.currentPage = 1;
                 }
 
-                customerSegmentsApi.search(getSearchCriteria(), function (data) {
+                customerSegmentsApi.search(getSearchCriteria(), (data) => {
                     blade.isLoading = false;
                     $scope.pageSettings.totalItems = data.totalCount;
                     blade.currentEntities = data.results;
@@ -29,11 +29,11 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 {
                     name: "platform.commands.refresh", icon: 'fa fa-refresh',
                     executeMethod: blade.refresh,
-                    canExecuteMethod: function () { return true; }
+                    canExecuteMethod: () => true
                 },
                 {
                     name: "platform.commands.add", icon: 'fa fa-plus',
-                    executeMethod: function () {
+                    executeMethod: () => {
                         bladeNavigationService.closeChildrenBlades(blade, function () {
                             var newBlade = {
                                 id: 'customerSegmentDetail',
@@ -46,15 +46,15 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                             bladeNavigationService.showBlade(newBlade, blade);
                         });
                     },
-                    canExecuteMethod: function () { return true; },
+                    canExecuteMethod: () => true ,
                     permission: 'marketing:create'
                 },
                 {
                     name: "platform.commands.delete", icon: 'fa fa-trash-o',
-                    executeMethod: function () {
+                    executeMethod: () => {
                         $scope.deleteSegments($scope.gridApi.selection.getSelectedRows());
                     },
-                    canExecuteMethod: function () {
+                    canExecuteMethod: () => {
                         return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
                     },
                     permission: 'marketing:delete'
@@ -67,7 +67,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                     $scope.gridApi.infiniteScroll.saveScrollPercentage();
                     blade.isLoading = true;
 
-                    customerSegmentsApi.search(getSearchCriteria(), function (data) {
+                    customerSegmentsApi.search(getSearchCriteria(), (data) => {
                         blade.isLoading = false;
                         $scope.pageSettings.totalItems = data.totalCount;
                         blade.currentEntities = blade.currentEntities.concat(data.results);
@@ -86,7 +86,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 };
             }
 
-            $scope.selectNode = function (node) {
+            $scope.selectNode = (node) => {
                 $scope.selectedNodeId = node.id;
 
                 var newBlade = {
@@ -101,18 +101,18 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 bladeNavigationService.showBlade(newBlade, blade);
             };
 
-            $scope.deleteSegments = function (list) {
+            $scope.deleteSegments = (list) => {
                 var dialog = {
                     id: "confirmDeleteItem",
                     title: "demoCustomerSegmentsModule.dialogs.customer-segment-delete.title",
                     message: list.length > 1 ? "demoCustomerSegmentsModule.dialogs.customer-segment-delete.many-segments-message" : "demoCustomerSegmentsModule.dialogs.customer-segment-delete.one-segment-message",
                     messageValues: list.length === 1 && {name: list[0].name},
-                    callback: function (remove) {
+                    callback: (remove) => {
                         if (remove) {
-                            bladeNavigationService.closeChildrenBlades(blade, function () {
+                            bladeNavigationService.closeChildrenBlades(blade, () => {
                                 blade.isLoading = true;
                                 var itemIds = _.pluck(list, 'id');
-                                customerSegmentsApi.delete({ ids: itemIds }, function () {
+                                customerSegmentsApi.delete({ ids: itemIds }, () => {
                                     blade.refresh();
                                 });
                             });
@@ -123,7 +123,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             };
 
             var filter = blade.filter = $scope.filter = {};
-            filter.criteriaChanged = function () {
+            filter.criteriaChanged = () => {
                 if ($scope.pageSettings.currentPage > 1) {
                     $scope.pageSettings.currentPage = 1;
                 } else {
@@ -132,11 +132,11 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             };
 
             // ui-grid
-            $scope.setGridOptions = function (gridOptions) {
+            $scope.setGridOptions = (gridOptions) => {
                 bladeUtils.initializePagination($scope, true);
                 $scope.pageSettings.itemsPerPageCount = 20;
 
-                uiGridHelper.initialize($scope, gridOptions, function (gridApi) {
+                uiGridHelper.initialize($scope, gridOptions, (gridApi) => {
                     //update gridApi for current grid
                     $scope.gridApi = gridApi;
                     uiGridHelper.bindRefreshOnSortChanged($scope);

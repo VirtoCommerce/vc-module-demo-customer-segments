@@ -24,7 +24,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 },
                 response => {
                     _.each(response.results,
-                        function(property) {
+                        (property) => {
                             property.isRequired = true;
                             property.values = property.valueType === 'Boolean' ? [{ value: false }] : [];
                         });
@@ -55,7 +55,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             return !angular.equals(blade.selectedProperties, blade.originalProperties);
         }
 
-        $scope.selectProperties = function () {
+        $scope.selectProperties = () => {
             var newBlade = {
                 id: 'propertiesSelector',
                 title: 'demoCustomerSegmentsModule.blades.customer-segment-properties.title',
@@ -64,7 +64,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 originalEntity: blade.currentEntity,
                 properties: properties,
                 selectedProperties: blade.selectedProperties,
-                onSelected: function (entity, selectedProperties) {
+                onSelected: (entity, selectedProperties) => {
                     blade.currentEntity = entity;
                     blade.selectedProperties = selectedProperties;
                     blade.selectedPropertiesCount = blade.selectedProperties.length;
@@ -75,7 +75,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             bladeNavigationService.showBlade(newBlade, blade);
         };
 
-        $scope.editProperties = function () {
+        $scope.editProperties = () => {
             var newBlade = {
                 id: 'propertiesEditor',
                 title: 'demoCustomerSegmentsModule.blades.customer-segment-property-values.title',
@@ -84,7 +84,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 template: 'Modules/$(virtoCommerce.DemoCustomerSegmentsModule)/Scripts/blades/customerSegment-property-values.tpl.html',
                 originalEntity: blade.currentEntity,
                 selectedProperties: blade.selectedProperties,
-                onSelected: function (entity, selectedProperties) {
+                onSelected: (entity, selectedProperties) => {
                     blade.currentEntity = entity;
                     blade.selectedProperties = selectedProperties;
                     getCustomersCount();
@@ -107,7 +107,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             return isDirty() && blade.selectedProperties && blade.selectedProperties.length && blade.selectedProperties.every(x => x.values && x.values.length);
         };
 
-        $scope.saveChanges = function() {
+        $scope.saveChanges = () => {
             if (blade.onSelected) {
                 const customerSegmentRuleBlock = blade.currentEntity.expressionTree.children.find(x => x.id === expressionTreeDemoBlockCustomerSegmentRuleId);
                 customerSegmentRuleBlock.children = [];
@@ -123,7 +123,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             $scope.bladeClose();
         };
 
-        $scope.bladeClose = function() {
+        $scope.bladeClose = () => {
             blade.parentBlade.activeBladeId = null;
             bladeNavigationService.closeBlade(blade);
         };

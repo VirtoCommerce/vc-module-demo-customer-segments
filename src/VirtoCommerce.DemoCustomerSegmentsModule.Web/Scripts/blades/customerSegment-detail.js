@@ -8,7 +8,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 
         $scope.groups = settings.getValues({ id: 'Customer.MemberGroups' });
 
-        blade.refresh = function (parentRefresh) {
+        blade.refresh = (parentRefresh) => {
             if (blade.isNew) {
                 customerSegmentsApi.new({},
                     data => {
@@ -28,14 +28,14 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             }
         }
 
-        blade.onClose = function (closeCallback) {
+        blade.onClose = (closeCallback) => {
             bladeNavigationService.showConfirmationIfNeeded(isDirty() && !blade.isNew, $scope.isValid(), blade, $scope.saveChanges, closeCallback, "demoCustomerSegmentsModule.dialogs.customer-segment-save.title", "demoCustomerSegmentsModule.dialogs.customer-segment-save.message");
         };
 
         var formScope;
         $scope.setForm = (form) => { formScope = form; };
 
-        $scope.isValid = function () {
+        $scope.isValid = () => {
             return formScope && formScope.$valid;
         };
 
@@ -43,12 +43,12 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             return isDirty() && $scope.isValid() && blade.mainParametersAreSet && blade.ruleIsSet;
         };
 
-        $scope.openGroupsDictionarySettingManagement = function () {
+        $scope.openGroupsDictionarySettingManagement = () => {
             var newBlade = {
                 id: 'settingDetailChild',
                 isApiSave: true,
                 currentEntityId: 'Customer.MemberGroups',
-                parentRefresh: function (data) { $scope.groups = data; },
+                parentRefresh: (data) => { $scope.groups = data; },
                 controller: 'platformWebApp.settingDictionaryController',
                 template: '$(Platform)/Scripts/app/settings/blades/setting-dictionary.tpl.html'
             };
@@ -60,9 +60,9 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
         }
 
 
-        $scope.saveChanges = function () {
+        $scope.saveChanges = () => {
             if (blade.isNew) {
-                customerSegmentsApi.save({}, [blade.currentEntity], function (data) {
+                customerSegmentsApi.save({}, [blade.currentEntity], (data) => {
                     blade.isNew = undefined;
                     blade.originalEntity = data[0];
                     blade.refresh(true);
@@ -78,7 +78,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 });
                 }
             else {
-                customerSegmentsApi.save({}, [blade.currentEntity], function (data) {                    
+                customerSegmentsApi.save({}, [blade.currentEntity], (data) => {
                     blade.originalEntity = data[0];
                     blade.refresh(true);
                     $scope.closeBlade();
@@ -94,7 +94,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             }                            
         }
 
-        $scope.mainParameters = function () {
+        $scope.mainParameters = () => {
             const parametersBlade = {
                 id: "mainParameters",
                 title: "demoCustomerSegmentsModule.blades.customer-segment-parameters.title",
@@ -102,7 +102,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 controller: 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentMainParametersController',
                 template: 'Modules/$(virtoCommerce.DemoCustomerSegmentsModule)/Scripts/blades/customerSegment-main-parameters.tpl.html',
                 originalEntity: blade.currentEntity,
-                onSelected: function (entity) {
+                onSelected: (entity) => {
                     blade.currentEntity = entity;
                     blade.mainParametersAreSet = true;
                 }
@@ -111,22 +111,22 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             bladeNavigationService.showBlade(parametersBlade, blade);
         };
 
-            $scope.createCustomerFilter = function () {
-                var ruleCreationBlade = {
-                    id: "createCustomerSegmentRule",
-                    controller: 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentRuleController',
-                    title: 'demoCustomerSegmentsModule.blades.customer-segment-rule-creation.title',
-                    subtitle: 'demoCustomerSegmentsModule.blades.customer-segment-rule-creation.subtitle',
-                    template: 'Modules/$(virtoCommerce.DemoCustomerSegmentsModule)/Scripts/blades/customerSegment-rule.tpl.html',
-                    originalEntity: blade.currentEntity,
-                    onSelected: function (entity) {
-                        blade.currentEntity = entity;
-                        blade.ruleIsSet = true;
-                    }
-                };
-                blade.activeBladeId = ruleCreationBlade.id;
-                bladeNavigationService.showBlade(ruleCreationBlade, blade);
+        $scope.createCustomerFilter = () => {
+            var ruleCreationBlade = {
+                id: "createCustomerSegmentRule",
+                controller: 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentRuleController',
+                title: 'demoCustomerSegmentsModule.blades.customer-segment-rule-creation.title',
+                subtitle: 'demoCustomerSegmentsModule.blades.customer-segment-rule-creation.subtitle',
+                template: 'Modules/$(virtoCommerce.DemoCustomerSegmentsModule)/Scripts/blades/customerSegment-rule.tpl.html',
+                originalEntity: blade.currentEntity,
+                onSelected: (entity) => {
+                    blade.currentEntity = entity;
+                    blade.ruleIsSet = true;
+                }
             };
+            blade.activeBladeId = ruleCreationBlade.id;
+            bladeNavigationService.showBlade(ruleCreationBlade, blade);
+        };
 
         $scope.$watch('blade.currentEntity', (data) => {
             if (data) {
@@ -140,7 +140,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             }
         }, true);
 
-        $scope.closeBlade = function () {
+        $scope.closeBlade = () => {
             blade.parentBlade.activeBladeId = null;
             bladeNavigationService.closeBlade(blade);
         };
