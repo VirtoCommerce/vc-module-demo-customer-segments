@@ -39,7 +39,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
             serviceCollection.AddTransient<Func<IDemoCustomerSegmentRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IDemoCustomerSegmentRepository>());
             serviceCollection.AddTransient<IDemoCustomerSegmentService, DemoCustomerSegmentService>();
             serviceCollection.AddTransient<IDemoCustomerSegmentSearchService, DemoCustomerSegmentSearchService>();
-            serviceCollection.AddTransient<IndexMemberCustomerSegmentChangedEventHandler>();
+            serviceCollection.AddTransient<CustomerSegmentChangedEventHandler>();
             serviceCollection.AddSingleton<MemberDocumentBuilder, DemoMemberDocumentBuilder>();
         }
 
@@ -52,12 +52,13 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
             AbstractTypeFactory<IConditionTree>.RegisterType<DemoConditionPropertyValues>();
 
             var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
-            inProcessBus.RegisterHandler<DemoCustomerSegmentChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<IndexMemberCustomerSegmentChangedEventHandler>().Handle(message));
+            inProcessBus.RegisterHandler<DemoCustomerSegmentChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesEventHandler>().Handle(message));
+            inProcessBus.RegisterHandler<DemoCustomerSegmentChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<CustomerSegmentChangedEventHandler>().Handle(message));
 
             var settingsManager = appBuilder.ApplicationServices.GetService<ISettingsManager>();
             if (settingsManager.GetValue(ModuleConstants.Settings.General.EventBasedIndexation.Name, false))
             {
-                inProcessBus.RegisterHandler<DemoCustomerSegmentChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<IndexMemberCustomerSegmentChangedEventHandler>().Handle(message));
+                inProcessBus.RegisterHandler<DemoCustomerSegmentChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<CustomerSegmentChangedEventHandler>().Handle(message));
             }
 
             // Ensure that any pending migrations are applied
