@@ -118,9 +118,42 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
                 DynamicProperties = properties
             };
 
+            var segment = GetCustomerSegment(properties, storeIds, "Test");
+            
+            var documentBuilder = new DemoMemberDocumentBuilder(GetMemberService(store1Customer, store2Customer), GetCustomerSegmentSearchService(segment));
+            var documents = await documentBuilder.GetDocumentsAsync(new List<string> { "Customer1", "Customer2" });
+
+            var firstCustomerUserGroups = GetUserGroups(documents[0]);
+            Assert.Equal("Test", firstCustomerUserGroups.ToString());
+
+            var secondCustomerUserGroups = GetUserGroups(documents[1]);
+            Assert.Null(secondCustomerUserGroups);
+        }
+
+        private IMemberService GetMemberService(params Member[] customers)
+        {
+            var memberServiceMock = new Mock<IMemberService>();
+            memberServiceMock
+                .Setup(memberService =>
+                    memberService.GetByIdsAsync(It.IsAny<string[]>(), It.IsAny<string>(), It.IsAny<string[]>()))
+                .Returns(() => Task.FromResult(customers));
+            return memberServiceMock.Object;
+        }
+
+        private IDemoCustomerSegmentSearchService GetCustomerSegmentSearchService(params DemoCustomerSegment[] segments)
+        {
+            var segmentSearchServiceMock = new Mock<IDemoCustomerSegmentSearchService>();
+            segmentSearchServiceMock.Setup(segmentSearchService =>
+                    segmentSearchService.SearchCustomerSegmentsAsync(It.IsAny<DemoCustomerSegmentSearchCriteria>()))
+                .Returns(() => Task.FromResult(new DemoCustomerSegmentSearchResult { Results = segments }));
+            return segmentSearchServiceMock.Object;
+        }
+
+        private DemoCustomerSegment GetCustomerSegment(DynamicObjectProperty[] properties, string[] storeIds, string userGroup)
+        {
             var segment = new DemoCustomerSegment
             {
-                UserGroup = "Test", StoreIds = storeIds, ExpressionTree = new DemoCustomerSegmentTree()
+                UserGroup = userGroup, StoreIds = storeIds, ExpressionTree = new DemoCustomerSegmentTree()
             };
             segment.ExpressionTree.MergeFromPrototype(new DemoCustomerSegmentTreePrototype());
             var block = segment.ExpressionTree.Children
@@ -131,24 +164,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
             condition.Properties = properties;
             condition.StoreIds = storeIds;
 
-            var memberServiceMock = new Mock<IMemberService>();
-            memberServiceMock
-                .Setup(memberService =>
-                    memberService.GetByIdsAsync(It.IsAny<string[]>(), It.IsAny<string>(), It.IsAny<string[]>()))
-                .Returns(() => Task.FromResult(new Member[] { store1Customer, store2Customer }));
-            var segmentSearchServiceMock = new Mock<IDemoCustomerSegmentSearchService>();
-            segmentSearchServiceMock.Setup(segmentSearchService =>
-                    segmentSearchService.SearchCustomerSegmentsAsync(It.IsAny<DemoCustomerSegmentSearchCriteria>()))
-                .Returns(() => Task.FromResult(new DemoCustomerSegmentSearchResult { Results = new[] { segment } }));
-
-            var documentBuilder = new DemoMemberDocumentBuilder(memberServiceMock.Object, segmentSearchServiceMock.Object);
-            var documents = await documentBuilder.GetDocumentsAsync(new List<string> { "Customer1", "Customer2" });
-
-            var firstCustomerUserGroups = GetUserGroups(documents[0]);
-            Assert.Equal("Test", firstCustomerUserGroups.ToString());
-
-            var secondCustomerUserGroups = GetUserGroups(documents[1]);
-            Assert.Null(secondCustomerUserGroups);
+            return segment;
         }
 
         private object GetUserGroups(IndexDocument document)
