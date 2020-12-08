@@ -21,6 +21,9 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             }
         ];
 
+        var formScope;
+        $scope.setForm = (form) => { formScope = form; };
+
         function initializeBlade () {
             blade.setProperties = angular.copy(blade.selectedProperties);
             blade.currentEntity = angular.copy(blade.originalEntity);
@@ -32,7 +35,11 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
         };
 
         $scope.isValid = function () {
-            return _.every(blade.setProperties, property => property.values.length);
+            return formScope &&
+                formScope.$valid &&
+                _.every(blade.setProperties,
+                    property => property.values.length &&
+                    _.every(property.values, value => typeof value.value !== 'undefined' && value.value !== null));
         }
 
         $scope.cancelChanges = function () {

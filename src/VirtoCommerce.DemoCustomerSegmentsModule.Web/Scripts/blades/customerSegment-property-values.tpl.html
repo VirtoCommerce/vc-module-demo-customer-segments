@@ -2,8 +2,8 @@
 <div class="blade-content">
     <div class="blade-inner">
         <div class="inner-block">
-            <form name="formScope" class="form">
-                <fieldset>
+            <form class="form" name="formScope">
+                <fieldset ng-init="setForm(formScope)">
                     <legend>
                         {{ 'demoCustomerSegmentsModule.blades.customer-segment-property-values.customer-properties' | translate }} <span class="count">{{blade.setProperties.length | number:0}}</span>
                     </legend>

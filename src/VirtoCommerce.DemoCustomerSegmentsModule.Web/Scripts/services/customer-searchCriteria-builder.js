@@ -8,11 +8,12 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             }
             if (properties) {
                 properties.forEach(property => {
-                    searchPhrase.push(property.name + ':' + property.values.map(value => value.value.name || value.value).join(','));
+                    const values = property.values.map(value => value.value ? value.value.name || value.value : '').join('","');
+                    searchPhrase.push(`"${property.name}":"${values}"`);
                 });
             }
             if (storeIds) {
-                searchPhrase.push('stores:' + storeIds.join(','));
+                searchPhrase.push(`stores:"${storeIds.join('","')}"`);
             }
 
             return {
