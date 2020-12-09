@@ -22,10 +22,9 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 blade.currentEntity = angular.copy(blade.originalEntity);
                 blade.mainParametersAreSet = true;
                 blade.ruleIsSet = true;
-                blade.isLoading = false;                
+                refreshCustomersCount();
+                blade.isLoading = false;
             }
-
-            refreshCustomersCount();
 
             if (parentRefresh) {
                 blade.parentBlade.refresh();
