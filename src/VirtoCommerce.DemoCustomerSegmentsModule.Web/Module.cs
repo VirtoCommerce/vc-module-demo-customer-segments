@@ -39,6 +39,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
             serviceCollection.AddTransient<Func<IDemoCustomerSegmentRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IDemoCustomerSegmentRepository>());
             serviceCollection.AddTransient<IDemoCustomerSegmentService, DemoCustomerSegmentService>();
             serviceCollection.AddTransient<IDemoCustomerSegmentSearchService, DemoCustomerSegmentSearchService>();
+            serviceCollection.AddTransient<LogChangesEventHandler>();
             serviceCollection.AddTransient<CustomerSegmentChangedEventHandler>();
             serviceCollection.AddSingleton<MemberDocumentBuilder, DemoMemberDocumentBuilder>();
         }
