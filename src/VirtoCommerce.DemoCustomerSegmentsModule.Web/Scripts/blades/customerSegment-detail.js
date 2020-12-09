@@ -1,15 +1,12 @@
 angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentDetailController',
-    ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', 'platformWebApp.dialogService', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi', 'virtoCommerce.customerModule.members', 'virtoCommerce.DemoCustomerSegmentsModule.customerSearchCriteriaBuilder',
-    function ($scope, bladeNavigationService, settings, dialogService, customerSegmentsApi, membersApi, customerSearchCriteriaBuilder) {
+    ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', 'platformWebApp.dialogService', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi', 'virtoCommerce.DemoCustomerSegmentsModule.expressionTreeHelper', 'virtoCommerce.DemoCustomerSegmentsModule.customerHelper',
+    function ($scope, bladeNavigationService, settings, dialogService, customerSegmentsApi, expressionTreeHelper, customerHelper) {
         const blade = $scope.blade;
         blade.headIcon = 'fa-pie-chart';
         blade.activeBladeId = null;
         blade.currentEntity = {};
         blade.customersCount = 0;
-
-        const expressionTreeDemoBlockCustomerSegmentRuleId = "DemoBlockCustomerSegmentRule"
-        const expressionTreeDemoConditionPropertyValuesId = "DemoConditionPropertyValues";
 
         $scope.groups = settings.getValues({ id: 'Customer.MemberGroups' });
 
@@ -36,34 +33,13 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
         }
 
         function refreshCustomersCount() {
-            const customerSegmentRuleBlock = blade.currentEntity.expressionTree.children.find(x => x.id === expressionTreeDemoBlockCustomerSegmentRuleId);
+            const selectedProperties = expressionTreeHelper.extractSelectedProperties(blade.currentEntity);            
 
-            if (!customerSegmentRuleBlock) {
-                throw new Error(expressionTreeDemoBlockCustomerSegmentRuleId + " block is missed in expression tree");
-            }
-
-            if (customerSegmentRuleBlock.children[0]) {
-                blade.originalProperties = customerSegmentRuleBlock.children[0].properties;
+            if (selectedProperties && selectedProperties.length > 0) {
+                customerHelper.getCustomersCount('', selectedProperties, blade.currentEntity.storeIds).then((x) => blade.customersCount = x);
             } else {
-                blade.originalProperties = [];
+                blade.customersCount = 0;
             }
-
-            blade.selectedPropertiesCount = blade.originalProperties.length;
-
-            blade.selectedProperties = angular.copy(blade.originalProperties);
-
-            if (blade.selectedProperties && blade.selectedProperties.length > 0) {
-                getCustomersCount();
-            }
-        }
-
-        function getCustomersCount() {
-            let searchCriteria = customerSearchCriteriaBuilder.build('', blade.selectedProperties, blade.currentEntity.storeIds);
-            searchCriteria.skip = 0;
-            searchCriteria.take = 0;
-            membersApi.search(searchCriteria, searchResult => {
-                blade.customersCount = searchResult.totalCount;
-            });
         }
 
         blade.onClose = (closeCallback) => {
