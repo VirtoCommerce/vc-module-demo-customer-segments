@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using VirtoCommerce.CoreModule.Core.Conditions;
+using VirtoCommerce.Platform.Core.DynamicProperties;
 
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Models
 {
     public class DemoConditionPropertyValues : ConditionTree
     {
-        public IDictionary<string, string[]> Properties { get; set; }
-
-        public IDictionary<string, string[]> GetPropertyValues()
+        public DemoConditionPropertyValues()
         {
-            return new Dictionary<string, string[]>();
+            Properties = new List<DynamicObjectProperty>();
         }
+
+        public ICollection<DynamicObjectProperty> Properties { get; set; }
     }
 }

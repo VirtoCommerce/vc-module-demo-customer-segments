@@ -14,8 +14,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Models
         [Required]
         [StringLength(128)]
         public string Name { get; set; }
-
-        [Required]
+                
         [StringLength(1024)]
         public string Description { get; set; }
 

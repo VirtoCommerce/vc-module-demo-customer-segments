@@ -1,11 +1,11 @@
 <div class="blade-static __bottom">
-    <button class="btn" ng-disabled="!canSave()">{{ 'platform.commands.create' | translate }}</button>
+    <button class="btn" ng-disabled="!canSave()" ng-click="saveChanges()">{{ blade.isNew ? 'platform.commands.create' : 'platform.commands.update' | translate }}</button>
 </div>
 <div class="blade-content __normal">
     <div class="blade-inner">
         <div class="inner-block">
             <form class="form" name="formScope">
-                <fieldset>
+                <fieldset ng-init="setForm(formScope)">
                     <div class="form-group __info list">
                         <label class="form-label">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.segment-name' | translate }}</label>
                         <div class="form-input">
@@ -21,7 +21,7 @@
                     <div class="form-group __info list">
                         <label class="form-label">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.user-group' | translate }}  <a href="" ng-click="openGroupsDictionarySettingManagement()" class="form-edit" va-permission="platform:setting:update"><i class="form-ico fa fa-pencil"></i></a></label>
                         <div class="form-input" data-role="input-control">
-                            <ui-select ng-model="blade.currentEntity.group">
+                            <ui-select ng-model="blade.currentEntity.userGroup" required>
                                 <ui-select-match allow-clear="true" placeholder="{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.user-group-placeholder' | translate }}">{{$select.selected}}</ui-select-match>
                                 <ui-select-choices repeat="x in groups | filter: $select.search">
                                     <span ng-bind-html="x | highlight: $select.search"></span>
@@ -38,9 +38,10 @@
                             <span class="list-t">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.main-parameters' | translate }}</span>
                             <span class="list-descr">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.main-parameters-description' | translate: {count: filledPropertiesCount, total: totalPropertiesCount} }}</span>
                         </li>
-                        <li class="list-item" ng-class="{'__selected': blade.activeBladeId === 'createCustomerSegmentRule', '__disabled': blade.currentEntity.storeIds == null}" ng-click="createCustomerFilter()">
+                        <li class="list-item" ng-class="{'__selected': blade.activeBladeId === 'createCustomerSegmentRule', '__disabled': !blade.currentEntity.storeIds || !blade.currentEntity.storeIds.length}" ng-click="createCustomerFilter()">
                             <i class="list-ico fa fa-cogs" aria-hidden="true"></i>
                             <span class="list-t">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.segment-rule' | translate }}</span>
+                            <span class="list-descr">{{ 'demoCustomerSegmentsModule.blades.customer-segment-detail.segment-rule-description' | translate: {count: blade.customersCount} }}</span>
                         </li>
                     </ul>
                 </div>

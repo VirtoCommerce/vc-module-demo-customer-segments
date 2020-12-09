@@ -1,18 +1,14 @@
 angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentRuleController',
-    ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.DemoCustomerSegmentsModule.customerSearchCriteriaBuilder',
-    'platformWebApp.dynamicProperties.api', 'virtoCommerce.customerModule.members',
-    function ($scope, bladeNavigationService, customerSearchCriteriaBuilder, dynamicPropertiesApi, membersApi) {
+    ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.api', 'virtoCommerce.DemoCustomerSegmentsModule.expressionTreeHelper', 'virtoCommerce.DemoCustomerSegmentsModule.customerHelper',
+    function ($scope, bladeNavigationService, dynamicPropertiesApi, expressionTreeHelper, customerHelper) {
         var blade = $scope.blade;
         blade.isLoading = true;
         blade.activeBladeId = null;
-
         blade.propertiesCount = 0;
         blade.selectedPropertiesCount = 0;
         blade.customersCount = 0;
-
-        blade.currentEntity = {};
-        blade.selectedProperties = [];
+               
 
         var properties = [];
 
@@ -23,7 +19,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 },
                 response => {
                     _.each(response.results,
-                        function(property) {
+                        (property) => {
                             property.isRequired = true;
                             property.values = property.valueType === 'Boolean' ? [{ value: false }] : [];
                         });
@@ -32,10 +28,24 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                     blade.isLoading = false;
                 });
 
-            blade.currentEntity = angular.copy(blade.originalEntity);
+            blade.currentEntity = angular.copy(blade.originalEntity);          
+
+            blade.originalProperties = expressionTreeHelper.extractSelectedProperties(blade.currentEntity);
+
+            blade.selectedPropertiesCount = blade.originalProperties.length;
+
+            blade.selectedProperties = angular.copy(blade.originalProperties);
+
+            if (blade.selectedProperties && blade.selectedProperties.length > 0) {
+                refreshCustomersCount();
+            }
         }
 
-        $scope.selectProperties = function () {
+        function isDirty() {
+            return !angular.equals(blade.selectedProperties, blade.originalProperties);
+        }
+
+        $scope.selectProperties = () => {
             var newBlade = {
                 id: 'propertiesSelector',
                 title: 'demoCustomerSegmentsModule.blades.customer-segment-properties.title',
@@ -44,7 +54,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 originalEntity: blade.currentEntity,
                 properties: properties,
                 selectedProperties: blade.selectedProperties,
-                onSelected: function (entity, selectedProperties) {
+                onSelected: (entity, selectedProperties) => {
                     blade.currentEntity = entity;
                     blade.selectedProperties = selectedProperties;
                     blade.selectedPropertiesCount = blade.selectedProperties.length;
@@ -55,7 +65,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             bladeNavigationService.showBlade(newBlade, blade);
         };
 
-        $scope.editProperties = function () {
+        $scope.editProperties = () => {
             var newBlade = {
                 id: 'propertiesEditor',
                 title: 'demoCustomerSegmentsModule.blades.customer-segment-property-values.title',
@@ -64,34 +74,34 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 template: 'Modules/$(virtoCommerce.DemoCustomerSegmentsModule)/Scripts/blades/customerSegment-property-values.tpl.html',
                 originalEntity: blade.currentEntity,
                 selectedProperties: blade.selectedProperties,
-                onSelected: function (entity, selectedProperties) {
+                onSelected: (entity, selectedProperties) => {
                     blade.currentEntity = entity;
                     blade.selectedProperties = selectedProperties;
-                    let searchCriteria = customerSearchCriteriaBuilder.build('', blade.selectedProperties, blade.currentEntity.storeIds);
-                    searchCriteria.skip = 0;
-                    searchCriteria.take = 0;
-                    membersApi.search(searchCriteria, searchResult => {
-                        blade.customersCount = searchResult.totalCount;
-                    });
+                    refreshCustomersCount();
                 }
             };
             blade.activeBladeId = newBlade.id;
             bladeNavigationService.showBlade(newBlade, blade);
         };
 
+        function refreshCustomersCount() {            
+            customerHelper.getCustomersCount('', blade.selectedProperties, blade.currentEntity.storeIds).then((x) => blade.customersCount = x);
+        }
+
         $scope.canSave = () => {
-            return blade.selectedProperties && blade.selectedProperties.length && blade.selectedProperties.every(x => x.values && x.values.length);
+            return isDirty() && blade.selectedProperties && blade.selectedProperties.length && blade.selectedProperties.every(x => x.values && x.values.length);
         };
 
-        $scope.saveChanges = function() {
+        $scope.saveChanges = () => {
             if (blade.onSelected) {
+                expressionTreeHelper.setSelectedProperties(blade.currentEntity, blade.selectedProperties);
                 blade.onSelected(blade.currentEntity);
             }
 
             $scope.bladeClose();
         };
 
-        $scope.bladeClose = function() {
+        $scope.bladeClose = () => {
             blade.parentBlade.activeBladeId = null;
             bladeNavigationService.closeBlade(blade);
         };

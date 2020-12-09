@@ -22,15 +22,14 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             blade.currentEntity = angular.copy(blade.originalEntity);
         }
 
-        blade.refresh = function() {
+        blade.refresh = () => {
             blade.isLoading = true;
 
             let searchCriteria = getSearchCriteria();
             membersApi.search(searchCriteria, searchResult => {
                 $scope.pageSettings.totalItems = searchResult.totalCount;
                 let memberTypeDefinition;
-                _.each(searchResult.results,
-                    function(x) {
+                _.each(searchResult.results, (x) => {
                         if (memberTypeDefinition = memberTypesResolverService.resolve(x.memberType)) {
                             x._memberTypeIcon = memberTypeDefinition.icon;
                         }
@@ -42,7 +41,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 
         var filter = $scope.filter = { };
 
-        filter.criteriaChanged = function () {
+        filter.criteriaChanged = () => {
             if ($scope.pageSettings.currentPage > 1) {
                 $scope.pageSettings.currentPage = 1;
             } else {
@@ -51,13 +50,13 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
         };
 
         // ui-grid
-        $scope.setGridOptions = function (gridId, gridOptions) {
+        $scope.setGridOptions = (gridId, gridOptions) => {
             $scope.gridOptions = gridOptions;
             gridOptionExtension.tryExtendGridOptions(gridId, gridOptions);
 
-            gridOptions.onRegisterApi = function (gridApi) {
+            gridOptions.onRegisterApi = (gridApi) => {
                 $scope.gridApi = gridApi;
-                gridApi.core.on.sortChanged($scope, function () {
+                gridApi.core.on.sortChanged($scope, () => {
                     if (!blade.isLoading) blade.refresh();
                 });
             };

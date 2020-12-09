@@ -1,15 +1,24 @@
 {
   "demoCustomerSegmentsModule": {
     "blades": {
+      "customer-segment-list": {
+        "labels": {
+          "name": "Segment name",
+          "is-active": "Is active",
+          "last-modified": "Modified"
+        }
+      },
       "customer-segment-detail": {
         "segment-name": "Segment name",
         "segment-description": "Description",
         "main-parameters": "Main parameters",
         "main-parameters-description": "{{count}} of {{total}} properties filled",
         "segment-rule": "Segment rule",
-        "segment-rule-description": "17 customers in the current filter",
+        "segment-rule-description": "{{count}} customers in the current filter",
         "user-group": "User group",
-        "user-group-placeholder": "Select user group"
+        "user-group-placeholder": "Select user group",
+        "title": "New segment",
+        "subtitle": "Customer rule based segment"
       },
       "customer-segment-parameters": {
         "title": "Main parameters",
@@ -54,6 +63,25 @@
           "type": "Type",
           "name": "Name"
         }
+      }
+    },
+    "dialogs": {
+      "customer-segment-delete": {
+        "title": "Delete confirmation",
+        "one-segment-message": "Customer segment {{name}} will be deleted and the customers of this segment will no longer be receiving the tagged promotions",
+        "many-segments-message": "Customer segments will be deleted and the customers of this segments will no longer be receiving the tagged promotions"
+      },
+      "customer-segment-save": {
+        "title": "Save changes",
+        "message": "The segment has been modified. Do you want to save changes?"
+      },
+      "customer-segment-created-successfully": {
+        "title": "Customer segment created",
+        "message": "The customer segment has been created successfully."
+      },
+      "customer-segment-updated-successfully": {
+        "title": "Customer segment updated",
+        "message": "The customer segment has been updated successfully."
       }
     }
   },

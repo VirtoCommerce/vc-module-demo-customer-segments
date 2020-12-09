@@ -30,7 +30,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             blade.isLoading = false;
         }
 
-        $scope.getDictionaryValues = function (property, callback) {
+        $scope.getDictionaryValues = (property, callback) => {
             dictionaryItemsApi.query({ id: property.objectType, propertyId: property.id }, callback);
         };
 
@@ -42,18 +42,18 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                     _.every(property.values, value => typeof value.value !== 'undefined' && value.value !== null));
         }
 
-        $scope.cancelChanges = function () {
+        $scope.cancelChanges = () => {
             $scope.bladeClose();
         };
 
-        $scope.saveChanges = function () {
+        $scope.saveChanges = () => {
             if (blade.onSelected) {
                 blade.onSelected(blade.currentEntity, blade.setProperties);
             }
             $scope.bladeClose();
         };
 
-        $scope.bladeClose = function() {
+        $scope.bladeClose = () => {
             blade.parentBlade.activeBladeId = null;
             bladeNavigationService.closeBlade(blade);
         };

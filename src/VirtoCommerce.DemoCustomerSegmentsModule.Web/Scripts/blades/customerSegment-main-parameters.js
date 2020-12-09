@@ -9,7 +9,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
         var formScope;
         $scope.setForm = (form) => { formScope = form; };
 
-        $scope.isValid = function() {
+        $scope.isValid = () => {
             return formScope && formScope.$valid;
         };
 
@@ -28,17 +28,17 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             end: false
         };
 
-        $scope.open = function ($event, which) {
+        $scope.open = ($event, which) => {
             $event.preventDefault();
             $event.stopPropagation();
             $scope.datepickers[which] = true;
         };
 
-        $scope.cancelChanges = function() {
+        $scope.cancelChanges = () => {
             $scope.bladeClose();
         };
 
-        $scope.saveChanges = function() {
+        $scope.saveChanges = () => {
             if (blade.currentEntity.isActive === undefined) {
                 blade.currentEntity.isActive = false;
             }
@@ -50,7 +50,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             $scope.bladeClose();
         };
 
-        $scope.bladeClose = function() {
+        $scope.bladeClose = () => {
             blade.parentBlade.activeBladeId = null;
             bladeNavigationService.closeBlade(blade);
         };
