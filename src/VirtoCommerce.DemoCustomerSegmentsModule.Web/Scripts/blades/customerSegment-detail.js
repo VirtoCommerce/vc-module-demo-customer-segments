@@ -1,10 +1,12 @@
 angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentDetailController',
-        ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', 'platformWebApp.dialogService', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi', function ($scope, bladeNavigationService, settings, dialogService, customerSegmentsApi) {
+    ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', 'platformWebApp.dialogService', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi', 'virtoCommerce.DemoCustomerSegmentsModule.expressionTreeHelper', 'virtoCommerce.DemoCustomerSegmentsModule.customerHelper',
+    function ($scope, bladeNavigationService, settings, dialogService, customerSegmentsApi, expressionTreeHelper, customerHelper) {
         const blade = $scope.blade;
         blade.headIcon = 'fa-pie-chart';
         blade.activeBladeId = null;
         blade.currentEntity = {};
+        blade.customersCount = 0;
 
         $scope.groups = settings.getValues({ id: 'Customer.MemberGroups' });
 
@@ -20,11 +22,22 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 blade.currentEntity = angular.copy(blade.originalEntity);
                 blade.mainParametersAreSet = true;
                 blade.ruleIsSet = true;
-                blade.isLoading = false;                
+                refreshCustomersCount();
+                blade.isLoading = false;
             }
 
             if (parentRefresh) {
                 blade.parentBlade.refresh();
+            }
+        }
+
+        function refreshCustomersCount() {
+            const selectedProperties = expressionTreeHelper.extractSelectedProperties(blade.currentEntity);            
+
+            if (selectedProperties && selectedProperties.length > 0) {
+                customerHelper.getCustomersCount('', selectedProperties, blade.currentEntity.storeIds).then((x) => blade.customersCount = x);
+            } else {
+                blade.customersCount = 0;
             }
         }
 
@@ -122,6 +135,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 onSelected: (entity) => {
                     blade.currentEntity = entity;
                     blade.ruleIsSet = true;
+                    refreshCustomersCount();
                 }
             };
             blade.activeBladeId = ruleCreationBlade.id;

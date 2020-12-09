@@ -1,15 +1,10 @@
 angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentRuleController',
-    ['$scope', 'platformWebApp.bladeNavigationService', 'virtoCommerce.DemoCustomerSegmentsModule.customerSearchCriteriaBuilder',
-    'platformWebApp.dynamicProperties.api', 'virtoCommerce.customerModule.members',
-    function ($scope, bladeNavigationService, customerSearchCriteriaBuilder, dynamicPropertiesApi, membersApi) {
+    ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.api', 'virtoCommerce.DemoCustomerSegmentsModule.expressionTreeHelper', 'virtoCommerce.DemoCustomerSegmentsModule.customerHelper',
+    function ($scope, bladeNavigationService, dynamicPropertiesApi, expressionTreeHelper, customerHelper) {
         var blade = $scope.blade;
         blade.isLoading = true;
         blade.activeBladeId = null;
-
-        const expressionTreeDemoBlockCustomerSegmentRuleId = "DemoBlockCustomerSegmentRule"
-        const expressionTreeDemoConditionPropertyValuesId = "DemoConditionPropertyValues";
-
         blade.propertiesCount = 0;
         blade.selectedPropertiesCount = 0;
         blade.customersCount = 0;
@@ -33,22 +28,17 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                     blade.isLoading = false;
                 });
 
-            blade.currentEntity = angular.copy(blade.originalEntity);
+            blade.currentEntity = angular.copy(blade.originalEntity);          
 
-            const customerSegmentRuleBlock = blade.currentEntity.expressionTree.children.find(x => x.id === expressionTreeDemoBlockCustomerSegmentRuleId);
+            blade.originalProperties = expressionTreeHelper.extractSelectedProperties(blade.currentEntity);
 
-            if (!customerSegmentRuleBlock) {
-                throw new Error(expressionTreeDemoBlockCustomerSegmentRuleId + " block is missed in expression tree");
-            }
-
-            if (customerSegmentRuleBlock.children[0]) {
-                blade.originalProperties = customerSegmentRuleBlock.children[0].properties;
-                blade.selectedPropertiesCount = blade.originalProperties.length;
-            } else {
-                blade.originalProperties = [];
-            }
+            blade.selectedPropertiesCount = blade.originalProperties.length;
 
             blade.selectedProperties = angular.copy(blade.originalProperties);
+
+            if (blade.selectedProperties && blade.selectedProperties.length > 0) {
+                refreshCustomersCount();
+            }
         }
 
         function isDirty() {
@@ -87,20 +77,15 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 onSelected: (entity, selectedProperties) => {
                     blade.currentEntity = entity;
                     blade.selectedProperties = selectedProperties;
-                    getCustomersCount();
+                    refreshCustomersCount();
                 }
             };
             blade.activeBladeId = newBlade.id;
             bladeNavigationService.showBlade(newBlade, blade);
         };
 
-        function getCustomersCount() {
-            let searchCriteria = customerSearchCriteriaBuilder.build('', blade.selectedProperties, blade.currentEntity.storeIds);
-            searchCriteria.skip = 0;
-            searchCriteria.take = 0;
-            membersApi.search(searchCriteria, searchResult => {
-                blade.customersCount = searchResult.totalCount;
-            });
+        function refreshCustomersCount() {            
+            customerHelper.getCustomersCount('', blade.selectedProperties, blade.currentEntity.storeIds).then((x) => blade.customersCount = x);
         }
 
         $scope.canSave = () => {
@@ -109,14 +94,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 
         $scope.saveChanges = () => {
             if (blade.onSelected) {
-                const customerSegmentRuleBlock = blade.currentEntity.expressionTree.children.find(x => x.id === expressionTreeDemoBlockCustomerSegmentRuleId);
-                customerSegmentRuleBlock.children = [];
-
-                customerSegmentRuleBlock.children.push({
-                    id: expressionTreeDemoConditionPropertyValuesId,
-                    properties: blade.selectedProperties
-                });
-
+                expressionTreeHelper.setSelectedProperties(blade.currentEntity, blade.selectedProperties);
                 blade.onSelected(blade.currentEntity);
             }
 
