@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Modularity;
 using VirtoCommerce.Platform.Core.Settings;
+using VirtoCommerce.SearchModule.Core.Model;
 
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
 {
@@ -40,7 +42,9 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
             serviceCollection.AddTransient<IDemoCustomerSegmentService, DemoCustomerSegmentService>();
             serviceCollection.AddTransient<IDemoCustomerSegmentSearchService, DemoCustomerSegmentSearchService>();
             serviceCollection.AddTransient<LogChangesEventHandler>();
-            serviceCollection.AddTransient<CustomerSegmentChangedEventHandler>();
+            serviceCollection.AddTransient<CacheCustomerSegmentChangedEventHandler>();
+            serviceCollection.AddTransient<IndexCustomerSegmentChangedEventHandler>();
+            serviceCollection.AddSingleton<MemberDocumentChangesProvider, DemoMemberDocumentChangesProvider>();
             serviceCollection.AddSingleton<MemberDocumentBuilder, DemoMemberDocumentBuilder>();
         }
 
@@ -54,12 +58,25 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
 
             var inProcessBus = appBuilder.ApplicationServices.GetService<IHandlerRegistrar>();
             inProcessBus.RegisterHandler<DemoCustomerSegmentChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<LogChangesEventHandler>().Handle(message));
-            inProcessBus.RegisterHandler<DemoCustomerSegmentChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<CustomerSegmentChangedEventHandler>().Handle(message));
+            inProcessBus.RegisterHandler<DemoCustomerSegmentChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<CacheCustomerSegmentChangedEventHandler>().Handle(message));
 
             var settingsManager = appBuilder.ApplicationServices.GetService<ISettingsManager>();
             if (settingsManager.GetValue(ModuleConstants.Settings.General.EventBasedIndexation.Name, false))
             {
-                inProcessBus.RegisterHandler<DemoCustomerSegmentChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<CustomerSegmentChangedEventHandler>().Handle(message));
+                inProcessBus.RegisterHandler<DemoCustomerSegmentChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<IndexCustomerSegmentChangedEventHandler>().Handle(message));
+            }
+
+            var memberIndexingConfigurations = appBuilder.ApplicationServices.GetServices<IndexDocumentConfiguration>();
+            if (memberIndexingConfigurations != null)
+            {
+                var changesProvider = appBuilder.ApplicationServices.GetService<MemberDocumentChangesProvider>();
+                var documentBuilder = appBuilder.ApplicationServices.GetService<MemberDocumentBuilder>();
+
+                foreach (var configuration in memberIndexingConfigurations.Where(c => c.DocumentType == KnownDocumentTypes.Member))
+                {
+                    configuration.DocumentSource.ChangesProvider = changesProvider;
+                    configuration.DocumentSource.DocumentBuilder = documentBuilder;
+                }
             }
 
             // Ensure that any pending migrations are applied
