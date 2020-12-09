@@ -134,6 +134,35 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
         }
 
         [Fact]
+        public async Task Multiple_Stores()
+        {
+            var properties = new[] { UsualDynamicProperty };
+
+            var store1Customer = new Contact
+            {
+                Id = "Customer1",
+                SecurityAccounts = new[] { new ApplicationUser { StoreId = "Store1" } },
+                DynamicProperties = properties
+            };
+            var store2Customer = new Contact
+            {
+                Id = "Customer2",
+                SecurityAccounts = new[] { new ApplicationUser { StoreId = "Store2" } },
+                DynamicProperties = properties
+            };
+
+            var segment = GetCustomerSegment(new[] { UsualDynamicProperty }, new[] { "Store1", "Store2" }, "Test");
+
+            var documents = await GetDocuments(segment, store1Customer, store2Customer);
+
+            var firstCustomerUserGroups = GetUserGroups(documents[0]);
+            Assert.Equal("Test", firstCustomerUserGroups.ToString());
+
+            var secondCustomerUserGroups = GetUserGroups(documents[1]);
+            Assert.Equal("Test", secondCustomerUserGroups.ToString());
+        }
+
+        [Fact]
         public async Task Single_Value_Of_Multi_Value_Property()
         {
             var segment = GetCustomerSegment(
