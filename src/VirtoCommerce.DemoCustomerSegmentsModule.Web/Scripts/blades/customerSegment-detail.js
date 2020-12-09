@@ -1,10 +1,15 @@
 angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentDetailController',
-        ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', 'platformWebApp.dialogService', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi', function ($scope, bladeNavigationService, settings, dialogService, customerSegmentsApi) {
+    ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', 'platformWebApp.dialogService', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi', 'virtoCommerce.customerModule.members', 'virtoCommerce.DemoCustomerSegmentsModule.customerSearchCriteriaBuilder',
+    function ($scope, bladeNavigationService, settings, dialogService, customerSegmentsApi, membersApi, customerSearchCriteriaBuilder) {
         const blade = $scope.blade;
         blade.headIcon = 'fa-pie-chart';
         blade.activeBladeId = null;
         blade.currentEntity = {};
+        blade.customersCount = 0;
+
+        const expressionTreeDemoBlockCustomerSegmentRuleId = "DemoBlockCustomerSegmentRule"
+        const expressionTreeDemoConditionPropertyValuesId = "DemoConditionPropertyValues";
 
         $scope.groups = settings.getValues({ id: 'Customer.MemberGroups' });
 
@@ -23,9 +28,42 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 blade.isLoading = false;                
             }
 
+            refreshCustomersCount();
+
             if (parentRefresh) {
                 blade.parentBlade.refresh();
             }
+        }
+
+        function refreshCustomersCount() {
+            const customerSegmentRuleBlock = blade.currentEntity.expressionTree.children.find(x => x.id === expressionTreeDemoBlockCustomerSegmentRuleId);
+
+            if (!customerSegmentRuleBlock) {
+                throw new Error(expressionTreeDemoBlockCustomerSegmentRuleId + " block is missed in expression tree");
+            }
+
+            if (customerSegmentRuleBlock.children[0]) {
+                blade.originalProperties = customerSegmentRuleBlock.children[0].properties;
+            } else {
+                blade.originalProperties = [];
+            }
+
+            blade.selectedPropertiesCount = blade.originalProperties.length;
+
+            blade.selectedProperties = angular.copy(blade.originalProperties);
+
+            if (blade.selectedProperties && blade.selectedProperties.length > 0) {
+                getCustomersCount();
+            }
+        }
+
+        function getCustomersCount() {
+            let searchCriteria = customerSearchCriteriaBuilder.build('', blade.selectedProperties, blade.currentEntity.storeIds);
+            searchCriteria.skip = 0;
+            searchCriteria.take = 0;
+            membersApi.search(searchCriteria, searchResult => {
+                blade.customersCount = searchResult.totalCount;
+            });
         }
 
         blade.onClose = (closeCallback) => {
@@ -122,6 +160,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 onSelected: (entity) => {
                     blade.currentEntity = entity;
                     blade.ruleIsSet = true;
+                    refreshCustomersCount();
                 }
             };
             blade.activeBladeId = ruleCreationBlade.id;

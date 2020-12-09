@@ -7,7 +7,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
         blade.isLoading = true;
         blade.activeBladeId = null;
 
-        const expressionTreeDemoBlockCustomerSegmentRuleId = "DemoBlockCustomerSegmentRule"
+        const expressionTreeDemoBlockCustomerSegmentRuleId = "DemoBlockCustomerSegmentRule";
         const expressionTreeDemoConditionPropertyValuesId = "DemoConditionPropertyValues";
 
         blade.propertiesCount = 0;
@@ -49,6 +49,10 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             }
 
             blade.selectedProperties = angular.copy(blade.originalProperties);
+
+            if (blade.selectedProperties && blade.selectedProperties.length > 0) {
+                getCustomersCount();
+            }
         }
 
         function isDirty() {
