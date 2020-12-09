@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using VirtoCommerce.CustomerModule.Data.Repositories;
 using VirtoCommerce.CustomerModule.Data.Search.Indexing;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
-using VirtoCommerce.DemoCustomerSegmentsModule.Data.Repositories;
 using VirtoCommerce.Platform.Core.ChangeLog;
 using VirtoCommerce.SearchModule.Core.Model;
 

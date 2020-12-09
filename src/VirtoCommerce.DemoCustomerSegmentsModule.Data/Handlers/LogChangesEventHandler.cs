@@ -20,15 +20,15 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Handlers
             _changeLogService = changeLogService;
         }
 
-        public virtual Task Handle(DemoCustomerSegmentChangedEvent @event)
+        public virtual Task Handle(DemoCustomerSegmentChangedEvent message)
         {
-            InnerHandle(@event);
+            InnerHandle(message);
             return Task.CompletedTask;
         }
 
-        protected virtual void InnerHandle<T>(GenericChangedEntryEvent<T> @event) where T : IEntity
+        protected virtual void InnerHandle<T>(GenericChangedEntryEvent<T> message) where T : IEntity
         {
-            var logOperations = @event.ChangedEntries.Select(x => AbstractTypeFactory<OperationLog>.TryCreateInstance().FromChangedEntry(x)).ToArray();
+            var logOperations = message.ChangedEntries.Select(x => AbstractTypeFactory<OperationLog>.TryCreateInstance().FromChangedEntry(x)).ToArray();
             //Background task is used here for performance reasons
             BackgroundJob.Enqueue(() => LogEntityChangesInBackground(logOperations));
         }
