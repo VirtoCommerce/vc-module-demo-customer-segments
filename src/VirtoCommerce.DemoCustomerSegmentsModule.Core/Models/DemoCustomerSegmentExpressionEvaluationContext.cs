@@ -29,7 +29,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Models
                 {
                     var dynamicPropertyValues = dynamicProperty.Values.Where(v => v.Value != null).ToArray();
                     hasPropertyValues = propertyValues.Aggregate(true, (current, propertyValue) =>
-                        current && dynamicPropertyValues.Any(dpv =>
+                        current || dynamicPropertyValues.Any(dpv =>
                             dpv.Locale.EqualsInvariant(propertyValue.Locale) &&
                             dpv.Value.ToString().EqualsInvariant(propertyValue.Value.ToString())));
                 }
