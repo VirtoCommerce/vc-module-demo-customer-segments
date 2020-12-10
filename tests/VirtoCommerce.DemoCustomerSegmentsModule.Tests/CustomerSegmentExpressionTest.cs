@@ -103,13 +103,12 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
         }
 
         [Fact]
-        public async Task Store_And_Usual_Property()
+        public async Task FilterBy_StoreAndUsualProperty_SetUserGroup()
         {
             var secondUsualProperty = (DynamicObjectProperty) UsualDynamicProperty.Clone();
             secondUsualProperty.Name = "Test Property";
             secondUsualProperty.Values.First().Value = "Test";
             var properties = new[] { UsualDynamicProperty, secondUsualProperty };
-
             var store1Customer = new Contact
             {
                 Id = "Customer1",
@@ -122,23 +121,18 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
                 SecurityAccounts = new[] { new ApplicationUser { StoreId = "Store2" } },
                 DynamicProperties = properties
             };
+            var segment = CreateCustomerSegment(new[] { UsualDynamicProperty }, new[] { "Store1" }, "Test");
 
-            var segment = GetCustomerSegment(new[] { UsualDynamicProperty }, new[] { "Store1" }, "Test");
+            var documents = await BuildIndexDocuments(segment, store1Customer, store2Customer);
 
-            var documents = await GetDocuments(segment, store1Customer, store2Customer);
-
-            var firstCustomerUserGroups = GetUserGroups(documents[0]);
-            Assert.Equal("Test", firstCustomerUserGroups.ToString());
-
-            var secondCustomerUserGroups = GetUserGroups(documents[1]);
-            Assert.Null(secondCustomerUserGroups);
+            Assert.Equal("Test", GetUserGroups(documents[0]).ToString());
+            Assert.Null(GetUserGroups(documents[1]));
         }
 
         [Fact]
-        public async Task Multiple_Stores()
+        public async Task FilterBy_MultipleStores_SetUserGroup()
         {
             var properties = new[] { UsualDynamicProperty };
-
             var store1Customer = new Contact
             {
                 Id = "Customer1",
@@ -151,112 +145,102 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
                 SecurityAccounts = new[] { new ApplicationUser { StoreId = "Store2" } },
                 DynamicProperties = properties
             };
+            var segment = CreateCustomerSegment(new[] { UsualDynamicProperty }, new[] { "Store1", "Store2" }, "Test");
 
-            var segment = GetCustomerSegment(new[] { UsualDynamicProperty }, new[] { "Store1", "Store2" }, "Test");
+            var documents = await BuildIndexDocuments(segment, store1Customer, store2Customer);
 
-            var documents = await GetDocuments(segment, store1Customer, store2Customer);
-
-            var firstCustomerUserGroups = GetUserGroups(documents[0]);
-            Assert.Equal("Test", firstCustomerUserGroups.ToString());
-
-            var secondCustomerUserGroups = GetUserGroups(documents[1]);
-            Assert.Equal("Test", secondCustomerUserGroups.ToString());
+            Assert.Equal("Test", GetUserGroups(documents[0]).ToString());
+            Assert.Equal("Test", GetUserGroups(documents[1]).ToString());
         }
 
         [Fact]
-        public async Task Single_Value_Of_Multi_Value_Property()
+        public async Task FilterBy_MultiValuePropertyWithSingleValue_SetUserGroup()
         {
-            var segment = GetCustomerSegment(
+            var segment = CreateCustomerSegment(
                 new[] { MultiValueDynamicPropertyWithSingleValue },
                 new[] { "Store" },
                 "Test");
+            var customer1 = GetCustomer(MultiValueDynamicPropertyWithMultipleValues);
+            var customer2 = GetCustomer(MultiValueDynamicPropertyWithSingleValue);
 
-            var documents = await GetDocuments(segment,
-                GetCustomer(MultiValueDynamicPropertyWithMultipleValues),
-                GetCustomer(MultiValueDynamicPropertyWithSingleValue));
+            var documents = await BuildIndexDocuments(segment,customer1, customer2);
 
-            var firstCustomerUserGroups = GetUserGroups(documents[0]);
-            Assert.Equal("Test", firstCustomerUserGroups.ToString());
-
-            var secondCustomerUserGroups = GetUserGroups(documents[1]);
-            Assert.Equal("Test", secondCustomerUserGroups.ToString());
+            Assert.Equal("Test", GetUserGroups(documents[0]).ToString());
+            Assert.Equal("Test", GetUserGroups(documents[1]).ToString());
         }
 
         [Fact]
-        public async Task Multiple_Values_Of_Multi_Value_Property()
+        public async Task FilterBy_MultiValuePropertyWithMultipleValues_SetUserGroup()
         {
-            var segment = GetCustomerSegment(
+            var segment = CreateCustomerSegment(
                 new[] { MultiValueDynamicPropertyWithMultipleValues },
                 new[] { "Store" },
                 "Test");
+            var customer1 = GetCustomer(MultiValueDynamicPropertyWithMultipleValues);
+            var customer2 = GetCustomer(MultiValueDynamicPropertyWithSingleValue);
             
-            var documents = await GetDocuments(segment,
-                GetCustomer(MultiValueDynamicPropertyWithMultipleValues),
-                GetCustomer(MultiValueDynamicPropertyWithSingleValue));
+            var documents = await BuildIndexDocuments(segment, customer1, customer2);
 
-            var firstCustomerUserGroups = GetUserGroups(documents[0]);
-            Assert.Equal("Test", firstCustomerUserGroups.ToString());
-
-            var secondCustomerUserGroups = GetUserGroups(documents[1]);
-            Assert.Equal("Test", secondCustomerUserGroups.ToString());
+            Assert.Equal("Test", GetUserGroups(documents[0]).ToString());
+            Assert.Equal("Test", GetUserGroups(documents[1]).ToString());
         }
 
         [Fact]
-        public async Task Single_Language_Of_Multi_Language_Property()
+        public async Task FilterBy_MultiLanguagePropertyWithSingleLanguage_SetUserGroup()
         {
             var multiLanguageDynamicPropertyWithSingleLanguage =
                 (DynamicObjectProperty) MultiLanguageDynamicProperty.Clone();
             multiLanguageDynamicPropertyWithSingleLanguage.Values =
                 MultiLanguageDynamicProperty.Values.Take(1).ToArray();
-            var segment = GetCustomerSegment(
+            var segment = CreateCustomerSegment(
                 new[] { multiLanguageDynamicPropertyWithSingleLanguage },
                 new[] { "Store" },
                 "Test");
+            var customer = GetCustomer(MultiLanguageDynamicProperty);
 
-            var documents = await GetDocuments(segment, GetCustomer(MultiLanguageDynamicProperty));
+            var documents = await BuildIndexDocuments(segment, customer);
 
-            var customerUserGroups = GetUserGroups(documents[0]);
-            Assert.Equal("Test", customerUserGroups.ToString());
+            Assert.Equal("Test", GetUserGroups(documents[0]).ToString());
         }
 
         [Fact]
-        public async Task Multiple_Languages_Of_Multi_Language_Property()
+        public async Task FilterBy_MultiLanguagePropertyWithMultipleLanguages_SetUserGroup()
         {
             var multiLanguageDynamicPropertyWithMultipleLanguages =
                 (DynamicObjectProperty) MultiLanguageDynamicProperty.Clone();
             multiLanguageDynamicPropertyWithMultipleLanguages.Values =
                 MultiLanguageDynamicProperty.Values.Take(2).ToArray();
-            var segment = GetCustomerSegment(
+            var segment = CreateCustomerSegment(
                 new[] { multiLanguageDynamicPropertyWithMultipleLanguages },
                 new[] { "Store" },
                 "Test");
+            var customer = GetCustomer(MultiLanguageDynamicProperty);
 
-            var documents = await GetDocuments(segment, GetCustomer(MultiLanguageDynamicProperty));
+            var documents = await BuildIndexDocuments(segment, customer);
 
-            var customerUserGroups = GetUserGroups(documents[0]);
-            Assert.Equal("Test", customerUserGroups.ToString());
+            Assert.Equal("Test", GetUserGroups(documents[0]).ToString());
         }
 
         [Fact]
-        public async Task Single_Value_And_Language_Of_Multi_Language_Property_With_Multiple_Values()
+        public async Task FilterBy_MultiLanguageMultiValuePropertyWithSingleLanguageAndValue_SetUserGroup()
         {
             var multiLanguageDynamicPropertyWithSingleLanguage =
                 (DynamicObjectProperty) MultiLanguageDynamicPropertyWithMultipleValues.Clone();
             multiLanguageDynamicPropertyWithSingleLanguage.Values =
                 MultiLanguageDynamicPropertyWithMultipleValues.Values.Take(1).ToArray();
-            var segment = GetCustomerSegment(
+            var segment = CreateCustomerSegment(
                 new[] { multiLanguageDynamicPropertyWithSingleLanguage },
                 new[] { "Store" },
                 "Test");
+            var customer = GetCustomer(MultiLanguageDynamicPropertyWithMultipleValues);
 
-            var documents = await GetDocuments(segment, GetCustomer(MultiLanguageDynamicPropertyWithMultipleValues));
+            var documents = await BuildIndexDocuments(segment, customer);
 
-            var customerUserGroups = GetUserGroups(documents[0]);
-            Assert.Equal("Test", customerUserGroups.ToString());
+            Assert.Equal("Test", GetUserGroups(documents[0]).ToString());
         }
 
         [Fact]
-        public async Task Multiple_Values_Of_Same_Language_Of_Multi_Language_Property_With_Multiple_Values()
+        public async Task FilterBy_MultiLanguageMultiValuePropertyWithMultipleValuesOfSameLanguage_SetUserGroup()
         {
             var multiLanguageDynamicPropertyWithSingleLanguage =
                 (DynamicObjectProperty) MultiLanguageDynamicPropertyWithMultipleValues.Clone();
@@ -264,19 +248,19 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
                 MultiLanguageDynamicPropertyWithMultipleValues.Values
                     .Where(value => value.Locale == "en-US")
                     .ToArray();
-            var segment = GetCustomerSegment(
+            var segment = CreateCustomerSegment(
                 new[] { multiLanguageDynamicPropertyWithSingleLanguage },
                 new[] { "Store" },
                 "Test");
+            var customer = GetCustomer(MultiLanguageDynamicPropertyWithMultipleValues);
 
-            var documents = await GetDocuments(segment, GetCustomer(MultiLanguageDynamicPropertyWithMultipleValues));
+            var documents = await BuildIndexDocuments(segment, customer);
 
-            var customerUserGroups = GetUserGroups(documents[0]);
-            Assert.Equal("Test", customerUserGroups.ToString());
+            Assert.Equal("Test", GetUserGroups(documents[0]).ToString());
         }
 
         [Fact]
-        public async Task Multiple_Values_Of_Different_Languages_Of_Multi_Language_Property_With_Multiple_Values()
+        public async Task FilterBy_MultiLanguageMultiValuePropertyWithMultipleValuesOfDifferentLanguage_SetUserGroup()
         {
             var multiLanguageDynamicPropertyWithSingleLanguage =
                 (DynamicObjectProperty) MultiLanguageDynamicPropertyWithMultipleValues.Clone();
@@ -285,15 +269,15 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
                 MultiLanguageDynamicPropertyWithMultipleValues.Values.First(value => value.Locale == "en-US"),
                 MultiLanguageDynamicPropertyWithMultipleValues.Values.First(value => value.Locale == "de-DE")
             };
-            var segment = GetCustomerSegment(
+            var segment = CreateCustomerSegment(
                 new[] { multiLanguageDynamicPropertyWithSingleLanguage },
                 new[] { "Store" },
                 "Test");
+            var customer = GetCustomer(MultiLanguageDynamicPropertyWithMultipleValues);
 
-            var documents = await GetDocuments(segment, GetCustomer(MultiLanguageDynamicPropertyWithMultipleValues));
+            var documents = await BuildIndexDocuments(segment, customer);
 
-            var customerUserGroups = GetUserGroups(documents[0]);
-            Assert.Equal("Test", customerUserGroups.ToString());
+            Assert.Equal("Test", GetUserGroups(documents[0]).ToString());
         }
 
         private IMemberService GetMemberService(params Member[] customers)
@@ -315,7 +299,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
             return segmentSearchServiceMock.Object;
         }
 
-        private DemoCustomerSegment GetCustomerSegment(DynamicObjectProperty[] properties, string[] storeIds, string userGroup)
+        private DemoCustomerSegment CreateCustomerSegment(DynamicObjectProperty[] properties, string[] storeIds, string userGroup)
         {
             var segment = new DemoCustomerSegment
             {
@@ -333,7 +317,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
             return segment;
         }
 
-        private async Task<IList<IndexDocument>> GetDocuments(DemoCustomerSegment segment, params Member[] customers)
+        private async Task<IList<IndexDocument>> BuildIndexDocuments(DemoCustomerSegment segment, params Member[] customers)
         {
             var documentBuilder = new DemoMemberDocumentBuilder(
                 GetMemberService(customers),
