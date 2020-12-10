@@ -94,7 +94,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 
         $scope.saveChanges = () => {
             if (blade.onSelected) {
-                expressionTreeHelper.setSelectedProperties(blade.currentEntity, blade.selectedProperties);
+                expressionTreeHelper.updateExpressionTree(blade.currentEntity, blade.selectedProperties);
                 blade.onSelected(blade.currentEntity);
             }
 

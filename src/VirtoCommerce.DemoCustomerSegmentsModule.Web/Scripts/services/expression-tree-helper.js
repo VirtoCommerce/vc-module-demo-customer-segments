@@ -19,13 +19,14 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 
             return result;
         },
-        setSelectedProperties: (customerSegment, selectedProperties) => {
+        updateExpressionTree: (customerSegment, selectedProperties) => {
             const customerSegmentRuleBlock = customerSegment.expressionTree.children.find(x => x.id === expressionTreeDemoBlockCustomerSegmentRuleId);
             customerSegmentRuleBlock.children = [];
 
             customerSegmentRuleBlock.children.push({
                 id: expressionTreeDemoConditionPropertyValuesId,
-                properties: selectedProperties
+                properties: selectedProperties,
+                storeIds: customerSegment.storeIds
             });
         }
     }
