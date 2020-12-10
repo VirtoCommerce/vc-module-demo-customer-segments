@@ -4,17 +4,18 @@
     <version>1.0.0</version>
     <version-tag></version-tag>
     <platformVersion>3.29.0</platformVersion>
+    <title>Demo customer segments module</title>
+    <description>This module adds the customer segments functionality to VirtoCommerce platform.</description>
     <dependencies>
         <dependency id="VirtoCommerce.Core" version="3.7.0" />
         <dependency id="VirtoCommerce.Customer" version="3.12.0" />
         <dependency id="VirtoCommerce.Marketing" version="3.10.0" />
     </dependencies>
 
-    <title>VirtoCommerce.DemoCustomerSegmentsModule</title>
-    <description>This module adds the customer segments functionality to VirtoCommerce platform.</description>
     <authors>
         <author>Aleksandr Vishniakov</author>
         <author>Anton Veretennikov</author>
+        <author>Ilya Litvinenko</author>
     </authors>
     <owners>
       <owner>Virto Commerce</owner>
