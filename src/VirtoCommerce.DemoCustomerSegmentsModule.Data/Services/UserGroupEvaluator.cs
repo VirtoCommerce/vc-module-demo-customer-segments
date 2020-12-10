@@ -35,5 +35,10 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Services
 
             return result;
         }
+
+        public ICollection<string> EvaluateUserGroups(IEvaluationContext context)
+        {
+            return EvaluateUserGroupsAsync(context).GetAwaiter().GetResult();
+        }
     }
 }

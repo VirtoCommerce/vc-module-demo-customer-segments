@@ -34,7 +34,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Search.Indexing
             if (member is Contact customer)
             {
                 var evaluationContext = new DemoUserGroupEvaluationContext { Customer = customer };
-                document.AddFilterableValues("Groups", _userGroupEvaluator.EvaluateUserGroupsAsync(evaluationContext).GetAwaiter().GetResult());
+                document.AddFilterableValues("Groups", _userGroupEvaluator.EvaluateUserGroups(evaluationContext));
             }
 
             return document;
