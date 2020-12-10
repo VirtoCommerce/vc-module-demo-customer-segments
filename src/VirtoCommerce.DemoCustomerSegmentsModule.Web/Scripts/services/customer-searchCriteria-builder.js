@@ -8,7 +8,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             }
             if (properties) {
                 properties.forEach(property => {
-                    const values = property.values.map(value => value.value ? value.value.name || value.value : '').join('","');
+                    const values = property.values.map(value => value.value !== undefined && value.value !== null ? value.value.name || value.value : '').join('","');
                     searchPhrase.push(`"${property.name}":"${values}"`);
                 });
             }

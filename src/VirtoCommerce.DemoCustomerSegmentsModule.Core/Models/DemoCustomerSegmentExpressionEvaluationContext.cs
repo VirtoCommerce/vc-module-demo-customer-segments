@@ -13,7 +13,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Models
 
         public virtual bool CustomerRegisteredInStores(IEnumerable<string> storeIds)
         {
-            return !Customer.SecurityAccounts.Select(x => x.StoreId).Except(storeIds).Any();
+            return Customer.SecurityAccounts.Any() && !Customer.SecurityAccounts.Select(x => x.StoreId).Except(storeIds).Any();
         }
 
         public virtual bool CustomerHasPropertyValues(IEnumerable<DynamicObjectProperty> properties)
