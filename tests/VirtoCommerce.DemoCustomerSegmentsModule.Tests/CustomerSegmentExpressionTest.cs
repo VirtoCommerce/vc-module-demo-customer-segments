@@ -8,6 +8,7 @@ using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models.Search;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Services;
 using VirtoCommerce.DemoCustomerSegmentsModule.Data.Search.Indexing;
+using VirtoCommerce.DemoCustomerSegmentsModule.Data.Services;
 using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.SearchModule.Core.Model;
@@ -336,7 +337,8 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
         {
             var documentBuilder = new DemoMemberDocumentBuilder(
                 GetMemberService(customers),
-                GetCustomerSegmentSearchService(segment));
+                GetCustomerSegmentSearchService(segment),
+                new UserGroupEvaluator());
             return await documentBuilder.GetDocumentsAsync(customers.Select(customer => customer.Id).ToList());
         }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using VirtoCommerce.CustomerModule.Data.Repositories;
 using VirtoCommerce.CustomerModule.Data.Search.Indexing;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
@@ -26,13 +27,11 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Search.Indexing
         {
             long result;
 
-            var customerSegmentsCount = await GetCustomerSegmentsChangesCount(startDate, endDate);
-            // If any customer segments changed, then all members should be indexed
-            if (customerSegmentsCount > 0)
+            var customerSegmentsChangesCount = await GetCustomerSegmentsChangesCount(startDate, endDate);
+            if (customerSegmentsChangesCount > 0)
             {
-                // Get total members count
                 using var memberRepository = _memberRepositoryFactory();
-                result = memberRepository.Members.Count();
+                result = await memberRepository.Members.CountAsync();
             }
             else
             {
@@ -52,12 +51,12 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Search.Indexing
             {
                 // Get members from repository and return them as changes
                 using var repository = _memberRepositoryFactory();
-                var memberIds = repository.Members
+                var memberIds = await repository.Members
                     .OrderBy(i => i.CreatedDate)
                     .Select(i => i.Id)
                     .Skip((int)skip)
                     .Take((int)take)
-                    .ToArray();
+                    .ToArrayAsync();
 
                 result = memberIds.Select(id =>
                     new IndexDocumentChange

@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using VirtoCommerce.CoreModule.Core.Conditions;
-using VirtoCommerce.CustomerModule.Core;
 using VirtoCommerce.CustomerModule.Data.Search.Indexing;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Events;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
@@ -41,6 +40,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
             serviceCollection.AddTransient<Func<IDemoCustomerSegmentRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IDemoCustomerSegmentRepository>());
             serviceCollection.AddTransient<IDemoCustomerSegmentService, DemoCustomerSegmentService>();
             serviceCollection.AddTransient<IDemoCustomerSegmentSearchService, DemoCustomerSegmentSearchService>();
+            serviceCollection.AddTransient<IUserGroupEvaluator, UserGroupEvaluator>();
             serviceCollection.AddTransient<LogChangesEventHandler>();
             serviceCollection.AddTransient<CacheCustomerSegmentChangedEventHandler>();
             serviceCollection.AddTransient<IndexCustomerSegmentChangedEventHandler>();
@@ -61,7 +61,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
             inProcessBus.RegisterHandler<DemoCustomerSegmentChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<CacheCustomerSegmentChangedEventHandler>().Handle(message));
 
             var settingsManager = appBuilder.ApplicationServices.GetService<ISettingsManager>();
-            if (settingsManager.GetValue(ModuleConstants.Settings.General.EventBasedIndexation.Name, false))
+            if (settingsManager.GetValue(CustomerModule.Core.ModuleConstants.Settings.General.EventBasedIndexation.Name, false))
             {
                 inProcessBus.RegisterHandler<DemoCustomerSegmentChangedEvent>(async (message, token) => await appBuilder.ApplicationServices.GetService<IndexCustomerSegmentChangedEventHandler>().Handle(message));
             }
