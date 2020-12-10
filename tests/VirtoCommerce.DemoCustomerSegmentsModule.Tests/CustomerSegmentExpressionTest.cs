@@ -337,8 +337,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
         {
             var documentBuilder = new DemoMemberDocumentBuilder(
                 GetMemberService(customers),
-                GetCustomerSegmentSearchService(segment),
-                new UserGroupEvaluator());
+                new UserGroupEvaluator(GetCustomerSegmentSearchService(segment)));
             return await documentBuilder.GetDocumentsAsync(customers.Select(customer => customer.Id).ToList());
         }
 
