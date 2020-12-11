@@ -103,12 +103,31 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
         }
 
         [Fact]
+        public async Task Filter_CustomerWithoutAccounts_DoNotSetUserGroup()
+        {
+            var properties = new[] { UsualDynamicProperty };
+            var segment = CreateCustomerSegment(
+                properties,
+                new[] { "Store" },
+                "Test");
+            var customer = new Contact
+            {
+                Id = "Customer",
+                DynamicProperties = new[] { UsualDynamicProperty }
+            };
+
+            var documents = await BuildIndexDocuments(segment, customer);
+
+            Assert.Null(GetUserGroups(documents[0]));
+        }
+
+        [Fact]
         public async Task FilterBy_StoreAndUsualProperty_SetUserGroup()
         {
-            var secondUsualProperty = (DynamicObjectProperty) UsualDynamicProperty.Clone();
-            secondUsualProperty.Name = "Test Property";
-            secondUsualProperty.Values.First().Value = "Test";
-            var properties = new[] { UsualDynamicProperty, secondUsualProperty };
+            var secondUsualDynamicProperty = (DynamicObjectProperty) UsualDynamicProperty.Clone();
+            secondUsualDynamicProperty.Name = "Test Property";
+            secondUsualDynamicProperty.Values.First().Value = "Test";
+            var properties = new[] { UsualDynamicProperty, secondUsualDynamicProperty };
             var store1Customer = new Contact
             {
                 Id = "Customer1",
@@ -154,16 +173,76 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
         }
 
         [Fact]
+        public async Task FilterBy_NotMatchingStore_DoNotSetUserGroup()
+        {
+            var secondUsualDynamicProperty = (DynamicObjectProperty) UsualDynamicProperty.Clone();
+            secondUsualDynamicProperty.Name = "Test Property";
+            secondUsualDynamicProperty.Values.First().Value = "Test";
+            var properties = new[] { secondUsualDynamicProperty };
+            var segment = CreateCustomerSegment(
+                properties,
+                new[] { "Store" },
+                "Test");
+            var customer = GetCustomer(UsualDynamicProperty);
+
+            var documents = await BuildIndexDocuments(segment, customer);
+
+            Assert.Null(GetUserGroups(documents[0]));
+        }
+
+        [Fact]
+        public async Task FilterBy_NotMatchingUsualProperty_DoNotSetUserGroup()
+        {
+            var properties = new[] { UsualDynamicProperty };
+            var segment = CreateCustomerSegment(
+                properties,
+                new[] { "DifferentStore" },
+                "Test");
+            var customer = GetCustomer(UsualDynamicProperty);
+
+            var documents = await BuildIndexDocuments(segment, customer);
+
+            Assert.Null(GetUserGroups(documents[0]));
+        }
+
+        [Fact]
+        public async Task FilterBy_NotMatchingUsualPropertyValue_DoNotSetUserGroup()
+        {
+            var usualPropertyWithDifferentValue = (DynamicObjectProperty) UsualDynamicProperty.Clone();
+            usualPropertyWithDifferentValue.Values.First().Value = "Test";
+            var properties = new[] { usualPropertyWithDifferentValue };
+            var segment = CreateCustomerSegment(
+                properties,
+                new[] { "Store" },
+                "Test");
+            var customer = GetCustomer(UsualDynamicProperty);
+
+            var documents = await BuildIndexDocuments(segment, customer);
+
+            Assert.Null(GetUserGroups(documents[0]));
+        }
+
+        [Fact]
         public async Task FilterBy_MultiValuePropertyWithSingleValue_SetUserGroup()
         {
             var segment = CreateCustomerSegment(
                 new[] { MultiValueDynamicPropertyWithSingleValue },
                 new[] { "Store" },
                 "Test");
-            var customer1 = GetCustomer(MultiValueDynamicPropertyWithMultipleValues);
-            var customer2 = GetCustomer(MultiValueDynamicPropertyWithSingleValue);
+            var customer1 = new Contact
+            {
+                Id = "Customer1",
+                SecurityAccounts = new[] { new ApplicationUser { StoreId = "Store" } },
+                DynamicProperties = new[] { MultiValueDynamicPropertyWithMultipleValues }
+            };
+            var customer2 = new Contact
+            {
+                Id = "Customer1",
+                SecurityAccounts = new[] { new ApplicationUser { StoreId = "Store" } },
+                DynamicProperties = new[] { MultiValueDynamicPropertyWithSingleValue }
+            };
 
-            var documents = await BuildIndexDocuments(segment,customer1, customer2);
+            var documents = await BuildIndexDocuments(segment, customer1, customer2);
 
             Assert.Equal("Test", GetUserGroups(documents[0]).ToString());
             Assert.Equal("Test", GetUserGroups(documents[1]).ToString());
@@ -176,13 +255,59 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
                 new[] { MultiValueDynamicPropertyWithMultipleValues },
                 new[] { "Store" },
                 "Test");
-            var customer1 = GetCustomer(MultiValueDynamicPropertyWithMultipleValues);
-            var customer2 = GetCustomer(MultiValueDynamicPropertyWithSingleValue);
+            var customer1 = new Contact
+            {
+                Id = "Customer1",
+                SecurityAccounts = new[] { new ApplicationUser { StoreId = "Store" } },
+                DynamicProperties = new[] { MultiValueDynamicPropertyWithMultipleValues }
+            };
+            var customer2 = new Contact
+            {
+                Id = "Customer1",
+                SecurityAccounts = new[] { new ApplicationUser { StoreId = "Store" } },
+                DynamicProperties = new[] { MultiValueDynamicPropertyWithSingleValue }
+            };
             
             var documents = await BuildIndexDocuments(segment, customer1, customer2);
 
             Assert.Equal("Test", GetUserGroups(documents[0]).ToString());
             Assert.Equal("Test", GetUserGroups(documents[1]).ToString());
+        }
+
+        [Fact]
+        public async Task FilterBy_MultiValuePropertyWithOneDifferentValue_SetUserGroup()
+        {
+            var multiValueDynamicPropertyWithOneDifferentValues = (DynamicObjectProperty) MultiValueDynamicPropertyWithMultipleValues.Clone();
+            multiValueDynamicPropertyWithOneDifferentValues.Values.First().Value = "Test";
+            var segment = CreateCustomerSegment(
+                new[] { multiValueDynamicPropertyWithOneDifferentValues },
+                new[] { "Store" },
+                "Test");
+            var customer = GetCustomer(MultiValueDynamicPropertyWithMultipleValues);
+            
+            var documents = await BuildIndexDocuments(segment, customer);
+
+            Assert.Equal("Test", GetUserGroups(documents[0]).ToString());
+        }
+
+        [Fact]
+        public async Task FilterBy_MultiValuePropertyWithBothDifferentValue_DoNotSetUserGroup()
+        {
+            var multiValueDynamicPropertyWithBothDifferentValues = (DynamicObjectProperty) MultiValueDynamicPropertyWithMultipleValues.Clone();
+            multiValueDynamicPropertyWithBothDifferentValues.Values = new[]
+            {
+                new DynamicPropertyObjectValue { Value = "Test1", ValueType = DynamicPropertyValueType.ShortText },
+                new DynamicPropertyObjectValue { Value = "Test2", ValueType = DynamicPropertyValueType.ShortText }
+            };
+            var segment = CreateCustomerSegment(
+                new[] { multiValueDynamicPropertyWithBothDifferentValues },
+                new[] { "Store" },
+                "Test");
+            var customer = GetCustomer(MultiValueDynamicPropertyWithMultipleValues);
+            
+            var documents = await BuildIndexDocuments(segment, customer);
+
+            Assert.Null(GetUserGroups(documents[0]));
         }
 
         [Fact]

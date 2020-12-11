@@ -28,7 +28,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Core.Models
                 if (dynamicProperty != null && !propertyValues.IsNullOrEmpty())
                 {
                     var dynamicPropertyValues = dynamicProperty.Values.Where(v => v.Value != null).ToArray();
-                    hasPropertyValues = propertyValues.Aggregate(true, (current, propertyValue) =>
+                    hasPropertyValues = propertyValues.Aggregate(false, (current, propertyValue) =>
                         current || dynamicPropertyValues.Any(dpv =>
                             dpv.Locale.EqualsInvariant(propertyValue.Locale) &&
                             dpv.Value.ToString().EqualsInvariant(propertyValue.Value.ToString())));
