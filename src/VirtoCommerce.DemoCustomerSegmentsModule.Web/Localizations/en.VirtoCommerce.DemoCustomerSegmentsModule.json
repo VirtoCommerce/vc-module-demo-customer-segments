@@ -77,11 +77,17 @@
       },
       "customer-segment-created-successfully": {
         "title": "Customer segment created",
-        "message": "The customer segment has been created successfully."
+        "message": "The customer segment has been created successfully. It can take some time to recalculate the segment and assign a user group to a customer's index."
       },
       "customer-segment-updated-successfully": {
         "title": "Customer segment updated",
-        "message": "The customer segment has been updated successfully."
+        "message": "The customer segment has been updated successfully. It can take some time to recalculate the segment and assign a user group to a customer's index."
+      },
+      "customer-segment-deleted-successfully": {
+        "single-title": "Customer segment deleted",
+        "plural-title": "Customer segments deleted",
+        "single-message": "The customer segment has been deleted successfully. It can take some time to recalculate the segment and erase a user group from a customer's index.",
+        "plural-message": "The customer segments have been deleted successfully. It can take some time to recalculate the segments and erase a user group from a customer's index."
       }
     }
   },
