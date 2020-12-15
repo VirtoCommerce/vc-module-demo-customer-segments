@@ -114,6 +114,12 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                                 var itemIds = _.pluck(list, 'id');
                                 customerSegmentsApi.delete({ ids: itemIds }, () => {
                                     blade.refresh();
+                                    const successDialog = {
+                                        id: "customerSegmentDeletedDialog",
+                                        title: list.length > 1 ? 'demoCustomerSegmentsModule.dialogs.customer-segment-deleted-successfully.plural-title' : 'demoCustomerSegmentsModule.dialogs.customer-segment-deleted-successfully.single-title',
+                                        message: list.length > 1 ? 'demoCustomerSegmentsModule.dialogs.customer-segment-deleted-successfully.plural-message' : 'demoCustomerSegmentsModule.dialogs.customer-segment-deleted-successfully.single-message'
+                                    };
+                                    dialogService.showNotificationDialog(successDialog);
                                 });
                             });
                         }
