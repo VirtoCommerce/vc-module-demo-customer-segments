@@ -1,4 +1,4 @@
-# v1.1.vc-module-demo-customer-segments
+# v1.2.vc-module-demo-customer-segments
 name: Module CI
 
 on:
@@ -37,6 +37,10 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.11
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
 
       - uses: actions/checkout@v2
         with:
