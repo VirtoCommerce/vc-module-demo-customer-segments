@@ -3,8 +3,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Newtonsoft.Json;
-using VirtoCommerce.CoreModule.Core.Conditions;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
+using VirtoCommerce.DemoCustomerSegmentsModule.Data.JsonConverters;
 using VirtoCommerce.Platform.Core.Common;
 
 namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Models
@@ -54,7 +54,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Models
             customerSegment.ExpressionTree = AbstractTypeFactory<DemoCustomerSegmentTree>.TryCreateInstance();
             if (ExpressionTreeSerialized != null)
             {
-                customerSegment.ExpressionTree = JsonConvert.DeserializeObject<DemoCustomerSegmentTree>(ExpressionTreeSerialized, new ConditionJsonConverter());
+                customerSegment.ExpressionTree = JsonConvert.DeserializeObject<DemoCustomerSegmentTree>(ExpressionTreeSerialized, new DemoConditionJsonConverter());
             }
 
             if (Stores != null)
@@ -89,7 +89,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Models
 
             if (customerSegment.ExpressionTree != null)
             {
-                ExpressionTreeSerialized = JsonConvert.SerializeObject(customerSegment.ExpressionTree, new ConditionJsonConverter(doNotSerializeAvailCondition: true));
+                ExpressionTreeSerialized = JsonConvert.SerializeObject(customerSegment.ExpressionTree, new DemoConditionJsonConverter(doNotSerializeAvailCondition: true));
             }
 
             if (customerSegment.StoreIds != null)
