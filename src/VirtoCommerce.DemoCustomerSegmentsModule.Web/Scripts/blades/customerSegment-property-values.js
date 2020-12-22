@@ -1,7 +1,7 @@
 angular.module('virtoCommerce.DemoCustomerSegmentsModule')
 .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentPropertyValuesController',
-    ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.dictionaryItemsApi',
-    function ($scope, bladeNavigationService, dictionaryItemsApi) {
+    ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.dynamicProperties.dictionaryItemsApi', 'platformWebApp.settings',
+    function ($scope, bladeNavigationService, dictionaryItemsApi, settings) {
         var blade = $scope.blade;
         blade.currentEntity = {};
         blade.toolbarCommands = [
@@ -25,9 +25,12 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
         $scope.setForm = (form) => { formScope = form; };
 
         function initializeBlade () {
-            blade.setProperties = angular.copy(blade.selectedProperties);
-            blade.currentEntity = angular.copy(blade.originalEntity);
-            blade.isLoading = false;
+            settings.getValues({ id: 'VirtoCommerce.Core.General.Languages' }, data => {
+                $scope.languages = data;
+                blade.setProperties = angular.copy(blade.selectedProperties);
+                blade.currentEntity = angular.copy(blade.originalEntity);
+                blade.isLoading = false;
+            });
         }
 
         $scope.getDictionaryValues = (property, callback) => {
