@@ -15,11 +15,11 @@ on:
       appDescriptionRepo:
         description: 'ArgoCd repository'
         required: true
-        default: 'VirtoCommerce/vc-deploy-apps'
+        default: 'VirtoCommerce/vc-webstore-deploy'
       appDescriptionBranch:
         description: 'ArgoCd branch'
         required: true
-        default: 'master'
+        default: 'develop'
 
 
 jobs:
@@ -48,7 +48,7 @@ jobs:
       run: |
 
         cd ${{ github.workspace }}
-        cd ./webstore-app/overlays/dev
+        cd ./webstore-app/resources
         $fileName = "./deployment-cm.yaml"
         $content = Get-Content $fileName
         $key = "${{ github.event.inputs.moduleId }}"
