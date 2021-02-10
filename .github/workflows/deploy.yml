@@ -15,11 +15,11 @@ on:
       appDescriptionRepo:
         description: 'ArgoCd repository'
         required: true
-        default: 'VirtoCommerce/vc-deploy-apps'
+        default: 'VirtoCommerce/vc-webstore-deploy'
       appDescriptionBranch:
         description: 'ArgoCd branch'
         required: true
-        default: 'master'
+        default: 'dev'
 
 
 jobs:
@@ -48,7 +48,7 @@ jobs:
       run: |
 
         cd ${{ github.workspace }}
-        cd ./webstore-app/overlays/dev
+        cd ./webstore-app/resources
         $fileName = "./deployment-cm.yaml"
         $content = Get-Content $fileName
         $key = "${{ github.event.inputs.moduleId }}"
@@ -60,8 +60,8 @@ jobs:
       run: |
         if(git status --porcelain |Where {$_ -notmatch '^\?\?'}) # uncommitted changes exist
         {
-          git config --global user.name 'GitHub Actions'
-          git config user.email --global  'github.actions@virtoway.com'
+          git config --global user.name 'vc-ci'
+          git config user.email --global  'ci@virtocommerce.com'
           git commit -am 'Automated update ${{ github.repository }} to ${{ github.event.inputs.artifactVersion }}'
           git push
         }
@@ -76,7 +76,7 @@ jobs:
       run: | 
         do {
           Start-Sleep -s 15
-          $statusBage = (Invoke-WebRequest -Uri "https://cd.govirto.com/api/badge?name=webstore-app-dev").Content
+          $statusBage = (Invoke-WebRequest -Uri "https://argo.govirto.com/api/badge?name=webstore-develop").Content
           
           $syncedAndHealthy = $statusBage.Contains('>Healthy<') -and $statusBage.Contains('>Synced<')
           if (-not $syncedAndHealthy) {
