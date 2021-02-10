@@ -415,6 +415,17 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
             return memberServiceMock.Object;
         }
 
+        private IDynamicPropertySearchService GetDynamicPropertySearchService()
+        {
+            var dynPropSearchService = new Mock<IDynamicPropertySearchService>();
+
+            dynPropSearchService
+                .Setup(x => x.SearchDynamicPropertiesAsync(It.IsAny<DynamicPropertySearchCriteria>()))
+                .ReturnsAsync(new DynamicPropertySearchResult());
+
+            return dynPropSearchService.Object;
+        }
+
         private IDemoCustomerSegmentSearchService GetCustomerSegmentSearchService(params DemoCustomerSegment[] segments)
         {
             var segmentSearchServiceMock = new Mock<IDemoCustomerSegmentSearchService>();
@@ -446,6 +457,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Tests
         {
             var documentBuilder = new DemoMemberDocumentBuilder(
                 GetMemberService(customers),
+                GetDynamicPropertySearchService(),
                 new UserGroupEvaluator(GetCustomerSegmentSearchService(segment)));
             return await documentBuilder.GetDocumentsAsync(customers.Select(customer => customer.Id).ToList());
         }

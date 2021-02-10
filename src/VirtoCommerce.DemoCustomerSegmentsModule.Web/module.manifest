@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <module xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <id>VirtoCommerce.DemoCustomerSegmentsModule</id>
   <version>1.3.0</version>
   <version-tag />
-  <platformVersion>3.29.0</platformVersion>
+  <platformVersion>3.30.0</platformVersion>
   <title>Demo customer segments module</title>
   <description>This module adds the customer segments functionality to VirtoCommerce platform.</description>
   <authors>
@@ -23,7 +23,7 @@
   <moduleType>VirtoCommerce.DemoCustomerSegmentsModule.Web.Module, VirtoCommerce.DemoCustomerSegmentsModule.Web</moduleType>
   <dependencies>
     <dependency id="VirtoCommerce.Core" version="3.7.0" />
-    <dependency id="VirtoCommerce.Customer" version="3.12.0" />
+    <dependency id="VirtoCommerce.Customer" version="3.17.0" />
     <dependency id="VirtoCommerce.Marketing" version="3.10.0" />
   </dependencies>
   <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>

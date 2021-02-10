@@ -1,9 +1,11 @@
 using System.Linq;
+using System.Threading.Tasks;
 using VirtoCommerce.CustomerModule.Core.Model;
 using VirtoCommerce.CustomerModule.Core.Services;
 using VirtoCommerce.CustomerModule.Data.Search.Indexing;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Models;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Services;
+using VirtoCommerce.Platform.Core.DynamicProperties;
 using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.SearchModule.Core.Extenstions;
 using VirtoCommerce.SearchModule.Core.Model;
@@ -14,16 +16,19 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Search.Indexing
     {
         private readonly IUserGroupEvaluator _userGroupEvaluator;
 
-        public DemoMemberDocumentBuilder(IMemberService memberService,
-            IUserGroupEvaluator userGroupEvaluator) :
-            base(memberService)
+        public DemoMemberDocumentBuilder(
+            IMemberService memberService,
+            IDynamicPropertySearchService dynamicPropertySearchService,
+            IUserGroupEvaluator userGroupEvaluator
+            )
+            : base(memberService, dynamicPropertySearchService)
         {
             _userGroupEvaluator = userGroupEvaluator;
         }
 
-        protected override IndexDocument CreateDocument(Member member)
+        protected override async Task<IndexDocument> CreateDocument(Member member)
         {
-            var document = base.CreateDocument(member);
+            var document = await base.CreateDocument(member);
 
             if (member is IHasSecurityAccounts hasSecurityAccounts)
             {
@@ -34,7 +39,7 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Data.Search.Indexing
             if (member is Contact customer)
             {
                 var evaluationContext = new DemoUserGroupEvaluationContext { Customer = customer };
-                document.AddFilterableValues("Groups", _userGroupEvaluator.EvaluateUserGroups(evaluationContext));
+                document.AddFilterableValues("Groups", await _userGroupEvaluator.EvaluateUserGroupsAsync(evaluationContext));
             }
 
             return document;
