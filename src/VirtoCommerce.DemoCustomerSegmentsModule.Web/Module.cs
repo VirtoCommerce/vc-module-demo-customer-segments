@@ -31,10 +31,11 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
         public void Initialize(IServiceCollection serviceCollection)
         {
             // database initialization
-            var configuration = serviceCollection.BuildServiceProvider().GetRequiredService<IConfiguration>();
-            var connectionString = configuration.GetConnectionString("VirtoCommerce.VirtoCommerceDemoCustomerSegmentsModule") ?? configuration.GetConnectionString("VirtoCommerce");
-            serviceCollection.AddDbContext<DemoCustomerSegmentDbContext>(
-                options => options.UseSqlServer(connectionString));
+            serviceCollection.AddDbContext<DemoCustomerSegmentDbContext>((provider, options) =>
+            {
+                var configuration = provider.GetRequiredService<IConfiguration>();
+                options.UseSqlServer(configuration.GetConnectionString(ModuleInfo.Id) ?? configuration.GetConnectionString("VirtoCommerce"));
+            });
 
             serviceCollection.AddTransient<IDemoCustomerSegmentRepository, DemoCustomerSegmentRepository>();
             serviceCollection.AddTransient<Func<IDemoCustomerSegmentRepository>>(provider => () => provider.CreateScope().ServiceProvider.GetRequiredService<IDemoCustomerSegmentRepository>());
