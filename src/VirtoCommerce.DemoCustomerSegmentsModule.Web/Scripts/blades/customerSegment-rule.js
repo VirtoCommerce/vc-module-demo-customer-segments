@@ -69,7 +69,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
             var newBlade = {
                 id: 'propertiesEditor',
                 title: 'demoCustomerSegmentsModule.blades.customer-segment-property-values.title',
-                headIcon: 'fa-pie-chart',
+                headIcon: 'fas fa-chart-pie',
                 controller: 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentPropertyValuesController',
                 template: 'Modules/$(virtoCommerce.DemoCustomerSegmentsModule)/Scripts/blades/customerSegment-property-values.tpl.html',
                 originalEntity: blade.currentEntity,
