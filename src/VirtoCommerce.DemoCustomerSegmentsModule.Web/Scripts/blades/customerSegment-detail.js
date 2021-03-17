@@ -3,7 +3,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
     ['$scope', 'platformWebApp.bladeNavigationService', 'platformWebApp.settings', 'platformWebApp.dialogService', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi', 'virtoCommerce.DemoCustomerSegmentsModule.expressionTreeHelper', 'virtoCommerce.DemoCustomerSegmentsModule.customerHelper',
     function ($scope, bladeNavigationService, settings, dialogService, customerSegmentsApi, expressionTreeHelper, customerHelper) {
         const blade = $scope.blade;
-        blade.headIcon = 'fa-pie-chart';
+        blade.headIcon = 'fas fa-chart-pie';
         blade.activeBladeId = null;
         blade.currentEntity = {};
         blade.customersCount = 0;
