@@ -3,7 +3,7 @@
   <id>VirtoCommerce.DemoCustomerSegmentsModule</id>
   <version>1.4.0</version>
   <version-tag />
-  <platformVersion>3.30.0</platformVersion>
+  <platformVersion>3.49.0</platformVersion>
   <title>Demo customer segments module</title>
   <description>This module adds the customer segments functionality to VirtoCommerce platform.</description>
   <authors>

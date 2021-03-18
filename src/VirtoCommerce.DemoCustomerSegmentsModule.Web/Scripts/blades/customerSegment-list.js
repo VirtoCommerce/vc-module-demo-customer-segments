@@ -2,7 +2,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
     .controller('virtoCommerce.DemoCustomerSegmentsModule.customerSegmentListController', ['$scope', 'platformWebApp.dialogService', 'platformWebApp.bladeUtils', 'platformWebApp.uiGridHelper', 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsApi',
         function ($scope, dialogService, bladeUtils, uiGridHelper, customerSegmentsApi) {
             const blade = $scope.blade;
-            blade.headIcon = 'fa-pie-chart';
+            blade.headIcon = 'fas fa-chart-pie';
             const bladeNavigationService = bladeUtils.bladeNavigationService;
 
             blade.refresh = () => {
