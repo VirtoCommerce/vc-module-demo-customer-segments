@@ -32,7 +32,7 @@ module.exports = [
         devtool: false,
         plugins: [
             new webpack.SourceMapDevToolPlugin({
-                namespace: 'VirtoCommerce.DemoCustomerSegmentsModule'
+                namespace: 'VirtoCommerce.DemoCustomerSegments'
             }),
             new CleanWebpackPlugin(rootPath, { verbose: true }),
             new MiniCssExtractPlugin({
