@@ -18,5 +18,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="JsonConverters\" />
+  </ItemGroup>
 
 </Project>
