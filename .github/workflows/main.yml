@@ -16,6 +16,7 @@ on:
     branches:
       [master, dev]
     paths-ignore:
+      - '.github/**'
       - 'docs/**'
       - 'build/**'
       - 'README.md'
