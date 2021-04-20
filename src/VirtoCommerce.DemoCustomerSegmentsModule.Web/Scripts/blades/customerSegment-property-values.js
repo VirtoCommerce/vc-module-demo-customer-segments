@@ -11,7 +11,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                     let previewBlade = {
                         id: 'customerSegmentsPreview',
                         controller: 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentsPreview',
-                        template: 'Modules/$(virtoCommerce.DemoCustomerSegmentsModule)/Scripts/blades/customerSegments-preview.tpl.html',
+                        template: 'Modules/$(virtoCommerce.DemoCustomerSegments)/Scripts/blades/customerSegments-preview.tpl.html',
                         originalEntity: blade.currentEntity,
                         properties: blade.setProperties
                     };
