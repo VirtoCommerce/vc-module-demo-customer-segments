@@ -6,13 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="JsonConverters\**" />
-    <Content Remove="JsonConverters\**" />
-    <EmbeddedResource Remove="JsonConverters\**" />
-    <None Remove="JsonConverters\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.8" />
     <PackageReference Include="VirtoCommerce.MarketingModule.Core" Version="3.10.0" />
   </ItemGroup>
