@@ -1,11 +1,9 @@
 using System;
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using VirtoCommerce.CoreModule.Core.Conditions;
 using VirtoCommerce.CustomerModule.Data.Search.Indexing;
 using VirtoCommerce.DemoCustomerSegmentsModule.Core.Events;
@@ -15,7 +13,6 @@ using VirtoCommerce.DemoCustomerSegmentsModule.Data.Handlers;
 using VirtoCommerce.DemoCustomerSegmentsModule.Data.Repositories;
 using VirtoCommerce.DemoCustomerSegmentsModule.Data.Search.Indexing;
 using VirtoCommerce.DemoCustomerSegmentsModule.Data.Services;
-using VirtoCommerce.DemoCustomerSegmentsModule.Web.JsonConverters;
 using VirtoCommerce.Platform.Core.Bus;
 using VirtoCommerce.Platform.Core.Common;
 using VirtoCommerce.Platform.Core.Modularity;
@@ -51,9 +48,6 @@ namespace VirtoCommerce.DemoCustomerSegmentsModule.Web
 
         public void PostInitialize(IApplicationBuilder appBuilder)
         {
-            var mvcJsonOptions = appBuilder.ApplicationServices.GetService<IOptions<MvcNewtonsoftJsonOptions>>();
-            mvcJsonOptions.Value.SerializerSettings.Converters.Add(new PolymorphicCustomerSegmentJsonConverter());
-
             AbstractTypeFactory<IConditionTree>.RegisterType<DemoBlockCustomerSegmentRule>();
             AbstractTypeFactory<IConditionTree>.RegisterType<DemoConditionPropertyValues>();
 

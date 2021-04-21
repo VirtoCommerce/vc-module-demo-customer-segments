@@ -41,7 +41,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                                 subtitle: 'demoCustomerSegmentsModule.blades.customer-segment-detail.subtitle',
                                 isNew: true,
                                 controller: 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentDetailController',
-                                template: 'Modules/$(virtoCommerce.DemoCustomerSegmentsModule)/Scripts/blades/customerSegment-detail.tpl.html'
+                                template: 'Modules/$(virtoCommerce.DemoCustomerSegments)/Scripts/blades/customerSegment-detail.tpl.html'
                             };
                             bladeNavigationService.showBlade(newBlade, blade);
                         });
@@ -95,7 +95,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                     title: node.name,
                     subtitle: 'demoCustomerSegmentsModule.blades.customer-segment-detail.subtitle',
                     controller: 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentDetailController',
-                    template: 'Modules/$(virtoCommerce.DemoCustomerSegmentsModule)/Scripts/blades/customerSegment-detail.tpl.html'
+                    template: 'Modules/$(virtoCommerce.DemoCustomerSegments)/Scripts/blades/customerSegment-detail.tpl.html'
                 };
 
                 bladeNavigationService.showBlade(newBlade, blade);

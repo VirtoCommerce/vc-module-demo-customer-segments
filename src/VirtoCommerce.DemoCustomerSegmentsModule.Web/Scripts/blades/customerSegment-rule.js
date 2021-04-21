@@ -50,7 +50,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 id: 'propertiesSelector',
                 title: 'demoCustomerSegmentsModule.blades.customer-segment-properties.title',
                 controller: 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentPropertiesController',
-                template: 'Modules/$(virtoCommerce.DemoCustomerSegmentsModule)/Scripts/blades/customerSegment-properties.tpl.html',
+                template: 'Modules/$(virtoCommerce.DemoCustomerSegments)/Scripts/blades/customerSegment-properties.tpl.html',
                 originalEntity: blade.currentEntity,
                 properties: properties,
                 selectedProperties: blade.selectedProperties,
@@ -71,7 +71,7 @@ angular.module('virtoCommerce.DemoCustomerSegmentsModule')
                 title: 'demoCustomerSegmentsModule.blades.customer-segment-property-values.title',
                 headIcon: 'fas fa-chart-pie',
                 controller: 'virtoCommerce.DemoCustomerSegmentsModule.customerSegmentPropertyValuesController',
-                template: 'Modules/$(virtoCommerce.DemoCustomerSegmentsModule)/Scripts/blades/customerSegment-property-values.tpl.html',
+                template: 'Modules/$(virtoCommerce.DemoCustomerSegments)/Scripts/blades/customerSegment-property-values.tpl.html',
                 originalEntity: blade.currentEntity,
                 selectedProperties: blade.selectedProperties,
                 onSelected: (entity, selectedProperties) => {
