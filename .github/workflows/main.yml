@@ -1,17 +1,17 @@
-# v1.2.vc-module-demo-customer-segments.3
+# v1.4.vc-demo-module
 name: Module CI
 
 on:
   workflow_dispatch:
   push:
+    branches:
+      [master, dev]
     paths-ignore:
       - '.github/**'
       - 'docs/**'
       - 'build/**'
       - 'README.md'
       - 'LICENSE'
-    branches:
-      [master, dev]
   pull_request:
     branches:
       [master, dev]
@@ -21,7 +21,7 @@ on:
       - 'build/**'
       - 'README.md'
       - 'LICENSE'
-    
+
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -101,7 +101,7 @@ jobs:
 
       - name: Packaging
         run: vc-build Compress -skip Clean+Restore+Compile+Test
-      
+
 #      - name: Publish Nuget
 #        if: ${{ github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'}}
 #        uses: VirtoCommerce/vc-github-actions/publish-nuget@master
@@ -126,10 +126,22 @@ jobs:
           changelog: ${{ steps.changelog.outputs.changelog }}
         uses: VirtoCommerce/vc-github-actions/publish-github-release@master
 
+      - name: Setup Git Credentials
+        if: ${{ (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master') && github.event_name != 'workflow_dispatch' }}
+        uses: VirtoCommerce/vc-github-actions/setup-git-credentials-github@master
+        with:
+          githubToken: ${{ secrets.REPO_TOKEN }}
+
+      - name: Publish Manifest
+        if: ${{ (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master') && github.event_name != 'workflow_dispatch' }}
+        uses: VirtoCommerce/vc-github-actions/publish-manifest@master
+        with:
+          packageUrl: ${{ steps.blobRelease.outputs.packageUrl }}
+
       - name: Invoke Module deployment workflow
         if: ${{ github.ref == 'refs/heads/dev' || (github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/master')}}
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: Module deployment
+          workflow: VC deployment
           token: ${{ secrets.REPO_TOKEN }}
-          inputs: '{ "blobUrl": "${{ steps.blobRelease.outputs.packageUrl }}", "moduleId": "${{ steps.image.outputs.moduleId }}", "artifactVersion": "${{ steps.image.outputs.taggedVersion }}"}'
+          inputs: '{ "artifactUrl": "${{ steps.blobRelease.outputs.packageUrl }}" }'
